@@ -1,0 +1,31 @@
+<div class="container" fxLayout="row" fxLayoutAlign="center center">
+  <form [formGroup]="loginForm" fxFlex="30%" fxFlex.sm="50%" fxFlex.xs="90%">
+    <mat-card>
+      <mat-card-title> Login </mat-card-title>
+      <mat-card-content>
+        <mat-form-field>
+          <mat-label> E-mail </mat-label>
+          <input
+            matInput
+            type="text"
+            placeholder="example@example.com"
+            formControlName="email"
+          />
+          <mat-error *ngIf="loginForm.controls['email'].hasError('required')">
+            E-mail address is <b>required</b>
+          </mat-error>
+          <mat-error *ngIf="loginForm.controls['email'].hasError('email')">
+            Please provide a valid email address
+          </mat-error>
+        </mat-form-field>
+        <app-password-field [required]="true" formControlName="password">
+        </app-password-field>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button (click)="login()" color="primary">
+          Login
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </form>
+</div>
