@@ -1,16 +1,18 @@
 import { NgModule } from '@angular/core';
 import { LoginComponent } from './login/login.component';
-import { SharedModule } from 'src/shared/shared.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { StoreModule } from '@ngrx/store';
 import { AUTH_STATE_NAME } from './state/auth.selector';
 import { AuthReducer } from './state/auth.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { AuthEffects } from './state/auth.effect';
+import { AuthRoutingModule } from './auth-routing.module';
 
 @NgModule({
   declarations: [LoginComponent],
   imports: [
     SharedModule,
+    AuthRoutingModule,
     EffectsModule.forFeature([AuthEffects]),
     StoreModule.forFeature(AUTH_STATE_NAME, AuthReducer),
   ],
