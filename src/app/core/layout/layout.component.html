@@ -1,1 +1,45 @@
-<p>layout works!</p>
+<div class="navbar-container" [class.is-mobile]="mobileQuery.matches">
+  <!-- Navbar -->
+  <mat-toolbar class="navbar" color="primary">
+    <button mat-icon-button (click)="sideNav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <a class="navbar-logo" [routerLink]="['/']" matTooltip="Home">
+      <!-- Add Logo Here -->
+    </a>
+    <span class="navbar-spacer"></span>
+    <button mat-icon-button>
+      <mat-icon>notifications</mat-icon>
+    </button>
+    <button class="profile-button" [matMenuTriggerFor]="profileMenu">
+      <img src="" alt="" />
+    </button>
+    <mat-menu #profileMenu>
+      <a mat-menu-item>
+        <span>Profile</span>
+      </a>
+      <a mat-menu-item>
+        <span>Logout</span>
+      </a>
+    </mat-menu>
+  </mat-toolbar>
+  <mat-sidenav-container class="sidenav-container">
+    <!-- Sidenav Menu -->
+    <mat-sidenav
+      #sideNav
+      class="sidenav"
+      fixedTopGap="56"
+      [opened]="!mobileQuery.matches"
+      [mode]="mobileQuery.matches ? 'over' : 'side'"
+      [fixedInViewport]="mobileQuery.matches"
+    >
+      <mat-nav-list>
+        <!-- Add List Here -->
+      </mat-nav-list>
+    </mat-sidenav>
+    <!-- Content -->
+    <mat-sidenav-content class="sidenav-content">
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

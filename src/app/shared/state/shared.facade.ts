@@ -6,7 +6,7 @@ import { AppState } from 'src/app/state/app.state';
 import { displayErrorMessage, displayLoading } from './shared.actions';
 import { getErrorMessage, getLoading } from './shared.selector';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class SharedFacade {
   constructor(private store: Store<AppState>) {}
 

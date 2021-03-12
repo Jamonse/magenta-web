@@ -6,6 +6,7 @@ import { PasswordFieldComponent } from './password-field/password-field.componen
 import { LoadingComponent } from './loading/loading.component';
 import { ErrorComponent } from './error/error.component';
 import { GeneralDialogComponent } from './general-dialog/general-dialog.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,7 @@ import { GeneralDialogComponent } from './general-dialog/general-dialog.componen
     LoadingComponent,
     ErrorComponent,
     GeneralDialogComponent,
+    PageNotFoundComponent,
   ],
   imports: [CommonModule, MaterialModule, FormsModule, ReactiveFormsModule],
   exports: [
@@ -23,6 +25,7 @@ import { GeneralDialogComponent } from './general-dialog/general-dialog.componen
     PasswordFieldComponent,
     LoadingComponent,
     ErrorComponent,
+    PageNotFoundComponent,
   ],
 })
 export class SharedModule {}

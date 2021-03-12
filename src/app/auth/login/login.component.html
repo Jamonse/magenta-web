@@ -1,4 +1,3 @@
-<div>Login</div>
 <div
   class="container login-container"
   fxLayout="row"
@@ -8,7 +7,7 @@
     <mat-card>
       <mat-card-title> Login </mat-card-title>
       <mat-card-content>
-        <mat-form-field>
+        <mat-form-field class="full-width">
           <mat-label> E-mail </mat-label>
           <input
             matInput
@@ -23,7 +22,7 @@
             Please provide a valid email address
           </mat-error>
         </mat-form-field>
-        <app-password-field [required]="true" formControlName="password">
+        <app-password-field formControlName="password" ngDefaultControl>
         </app-password-field>
       </mat-card-content>
       <mat-card-actions>

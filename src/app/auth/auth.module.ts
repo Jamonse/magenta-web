@@ -7,12 +7,14 @@ import { AuthReducer } from './state/auth.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { AuthEffects } from './state/auth.effect';
 import { AuthRoutingModule } from './auth-routing.module';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [LoginComponent],
   imports: [
     SharedModule,
     AuthRoutingModule,
+    RouterModule,
     EffectsModule.forFeature([AuthEffects]),
     StoreModule.forFeature(AUTH_STATE_NAME, AuthReducer),
   ],

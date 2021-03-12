@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { SharedFacade } from 'src/app/shared/state/shared.facade';
 import { AuthFacade } from '../state/auth.facade';
 
@@ -11,14 +16,15 @@ export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
 
   constructor(
+    private formBuilder: FormBuilder,
     private authFacade: AuthFacade,
     private sharedFacade: SharedFacade
   ) {}
 
   ngOnInit(): void {
-    this.loginForm = new FormGroup({
-      email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl(''),
+    this.loginForm = this.formBuilder.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]],
     });
   }
 

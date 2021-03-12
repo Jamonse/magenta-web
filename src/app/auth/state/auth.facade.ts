@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/state/app.state';
 import { loginRequest } from './auth.actions';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class AuthFacade {
   constructor(private store: Store<AppState>) {}
 
