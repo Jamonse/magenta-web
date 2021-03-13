@@ -30,6 +30,7 @@ export class ErrorComponent implements OnInit {
         dialogType: GeneralDialogType.ERROR,
         dialogMessage: errorMessage,
       },
+      panelClass: 'dialog',
     });
     dialogRef.afterClosed().subscribe(() => this.facade.clearError());
   }

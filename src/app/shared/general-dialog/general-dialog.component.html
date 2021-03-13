@@ -1,5 +1,12 @@
-<div class="container dialog-container">
-  <mat-icon>{{ dialogIcon }}</mat-icon>
+<div
+  fxLayout="column"
+  fxLayoutAlign="space-around center"
+  class="container dialog-container"
+  fxLayoutGap="2rem"
+>
+  <mat-icon color="warn">{{ dialogIcon }}</mat-icon>
   <div>{{ dialogData.dialogMessage }}</div>
-  <button>OK</button>
+  <button fxFlexAlign="stretch" (click)="closeDialog()" mat-flat-button>
+    OK
+  </button>
 </div>

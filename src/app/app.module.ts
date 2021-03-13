@@ -11,6 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { appReducer } from './state/app.state';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from 'src/environments/environment';
+import { AuthEffects } from './auth/state/auth.effect';
 
 @NgModule({
   declarations: [AppComponent],
@@ -20,7 +21,7 @@ import { environment } from 'src/environments/environment';
     BrowserAnimationsModule,
     HttpClientModule,
     SharedModule,
-    EffectsModule.forRoot([]),
+    EffectsModule.forRoot([AuthEffects]),
     StoreModule.forRoot(appReducer),
     StoreDevtoolsModule.instrument({
       logOnly: environment.production,

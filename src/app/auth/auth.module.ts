@@ -5,7 +5,6 @@ import { StoreModule } from '@ngrx/store';
 import { AUTH_STATE_NAME } from './state/auth.selector';
 import { AuthReducer } from './state/auth.reducer';
 import { EffectsModule } from '@ngrx/effects';
-import { AuthEffects } from './state/auth.effect';
 import { AuthRoutingModule } from './auth-routing.module';
 import { RouterModule } from '@angular/router';
 
@@ -15,7 +14,7 @@ import { RouterModule } from '@angular/router';
     SharedModule,
     AuthRoutingModule,
     RouterModule,
-    EffectsModule.forFeature([AuthEffects]),
+    EffectsModule.forFeature(),
     StoreModule.forFeature(AUTH_STATE_NAME, AuthReducer),
   ],
 })
