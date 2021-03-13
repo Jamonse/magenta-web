@@ -13,7 +13,6 @@ import { UserData } from '../model/user-data.model';
 import { SharedFacade } from 'src/app/shared/state/shared.facade';
 import { of } from 'rxjs';
 import { displayErrorMessage } from 'src/app/shared/state/shared.actions';
-import { Router } from '@angular/router';
 import { RoutingService } from 'src/app/shared/route/routing.service';
 
 @Injectable()
@@ -87,8 +86,9 @@ export class AuthEffects {
     () => {
       return this.actions$.pipe(
         ofType(logoutAction),
-        map(() => {
+        tap(() => {
           this.router.navigateToLoginPage();
+          this.authService.logout();
         })
       );
     },

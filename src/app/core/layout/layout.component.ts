@@ -1,5 +1,6 @@
 import { MediaMatcher } from '@angular/cdk/layout';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { AuthFacade } from 'src/app/auth/state/auth.facade';
 
 @Component({
   templateUrl: './layout.component.html',
@@ -11,6 +12,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   constructor(
     private changeDetector: ChangeDetectorRef,
+    private authFacade: AuthFacade,
     private media: MediaMatcher
   ) {
     this.mobileQuery = this.media.matchMedia('(max-width: 1000px)');
@@ -22,5 +24,9 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.mobileQuery.removeEventListener('change', this._mobileQueryListener);
+  }
+
+  logout(): void {
+    this.authFacade.performLogout();
   }
 }

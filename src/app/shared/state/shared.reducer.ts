@@ -5,7 +5,7 @@ import { initialState } from './shared.state';
 const _sharedReducer = createReducer(
   initialState,
   on(displayLoading, (state, action) => {
-    return { ...state, displayLoading: action.status };
+    return { ...state, loading: action.status };
   }),
   on(displayErrorMessage, (state, action) => {
     return { ...state, errorMessage: action.message };

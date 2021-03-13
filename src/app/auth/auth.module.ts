@@ -7,6 +7,7 @@ import { AuthReducer } from './state/auth.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { AuthRoutingModule } from './auth-routing.module';
 import { RouterModule } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [LoginComponent],

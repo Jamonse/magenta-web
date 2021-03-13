@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Injectable, OnDestroy } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 import { LOGIN_URL, LOGOUT_URL } from 'src/app/shared/utils/url.utils';
 import { UserData } from '../model/user-data.model';
 
@@ -9,7 +9,8 @@ export const LOCAL_STORAGE_USER_DATE = 'user';
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService {
+export class AuthService implements OnDestroy {
+  logoutSubscription!: Subscription;
   constructor(private http: HttpClient) {}
 
   login(email: string, password: string): Observable<UserData> {
@@ -20,8 +21,8 @@ export class AuthService {
   }
 
   logout(): void {
+    this.logoutSubscription = this.http.post(LOGOUT_URL, null).subscribe();
     localStorage.removeItem(LOCAL_STORAGE_USER_DATE);
-    this.http.post(LOGOUT_URL, null);
   }
 
   createUserDetails(data: UserData): UserData {
@@ -67,5 +68,11 @@ export class AuthService {
       return user;
     }
     return null;
+  }
+
+  ngOnDestroy(): void {
+    if (this.logoutSubscription) {
+      this.logoutSubscription.unsubscribe();
+    }
   }
 }
