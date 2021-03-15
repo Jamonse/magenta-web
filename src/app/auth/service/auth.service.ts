@@ -3,8 +3,11 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { LOGIN_URL, LOGOUT_URL } from 'src/app/shared/utils/url.utils';
 import { UserData } from '../model/user-data.model';
+import { User } from '../model/user.model';
 
-export const LOCAL_STORAGE_USER_DATE = 'user';
+export const LOCAL_STORAGE_USER = 'user';
+export const LOCAL_STORAGE_JWT = 'jwt';
+export const LOCAL_STORAGE_RT = 'refreshToken';
 
 @Injectable({
   providedIn: 'root',
@@ -21,8 +24,13 @@ export class AuthService implements OnDestroy {
   }
 
   logout(): void {
-    this.logoutSubscription = this.http.post(LOGOUT_URL, null).subscribe();
-    localStorage.removeItem(LOCAL_STORAGE_USER_DATE);
+    // Send refresh token to API on logout
+    const refreshToken = localStorage.getItem(LOCAL_STORAGE_RT);
+    this.logoutSubscription = this.http
+      .post(LOGOUT_URL, refreshToken)
+      .subscribe();
+    // Clear local storage
+    localStorage.clear();
   }
 
   createUserDetails(data: UserData): UserData {
@@ -43,29 +51,26 @@ export class AuthService implements OnDestroy {
   }
 
   saveUserInLocalStorage(userData: UserData): void {
-    localStorage.setItem('user', JSON.stringify(userData));
+    localStorage.setItem(LOCAL_STORAGE_USER, JSON.stringify(userData.user));
+    localStorage.setItem(LOCAL_STORAGE_JWT, JSON.stringify(userData.jwt));
+    localStorage.setItem(
+      LOCAL_STORAGE_RT,
+      JSON.stringify(userData.refreshToken)
+    );
   }
 
   getUserFromLocalStorage(): UserData | null {
-    const userDataPayload: string | null = localStorage.getItem(
-      LOCAL_STORAGE_USER_DATE
-    );
-    if (userDataPayload) {
-      const userData: any = JSON.parse(userDataPayload);
-      const user: UserData = {
-        user: {
-          id: userData.user.id,
-          firstName: userData.user.firstName,
-          lastName: userData.user.lastName,
-          email: userData.user.email,
-          phoneNumber: userData.user.phoneNumber,
-          preferedTheme: userData.user.preferedTheme,
-          permissions: userData.user.permissions,
-        },
-        jwt: userData.jwt,
-        refreshToken: userData.refreshToken,
+    const userString = localStorage.getItem(LOCAL_STORAGE_USER);
+    const jwt = localStorage.getItem(LOCAL_STORAGE_JWT);
+    const refreshToken = localStorage.getItem(LOCAL_STORAGE_RT);
+    if (userString && jwt && refreshToken) {
+      const user: User = JSON.parse(userString);
+      const userData: UserData = {
+        user: user,
+        jwt: jwt,
+        refreshToken: refreshToken,
       };
-      return user;
+      return userData;
     }
     return null;
   }

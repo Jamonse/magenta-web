@@ -87,8 +87,8 @@ export class AuthEffects {
       return this.actions$.pipe(
         ofType(logoutAction),
         tap(() => {
-          this.router.navigateToLoginPage();
           this.authService.logout();
+          this.router.navigateToLoginPage();
         })
       );
     },

@@ -11,8 +11,8 @@
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$magenta-web-primary: mat-palette($mat-indigo);
-$magenta-web-accent: mat-palette($mat-pink, A200, A100, A400);
+$magenta-web-primary-light: mat-palette($mat-purple);
+$magenta-web-accent-light: mat-palette($mat-blue-grey, A200, A100, A400);
 
 // The warn palette is optional (defaults to red).
 $magenta-web-warn: mat-palette($mat-red);
@@ -22,19 +22,43 @@ $magenta-web-warn: mat-palette($mat-red);
 $magenta-web-theme: mat-light-theme(
   (
     color: (
-      primary: $magenta-web-primary,
-      accent: $magenta-web-accent,
+      primary: $magenta-web-primary-light,
+      accent: $magenta-web-accent-light,
       warn: $magenta-web-warn,
     ),
   )
 );
 
+$magenta-web-primary-dark: mat-palette($mat-purple);
+$magenta-web-accent-dark: mat-palette($mat-blue-grey, A200, A100, A400);
+
+// Dark theme object
+$magenta-web-theme-dark: mat-dark-theme(
+  (
+    color: (
+      primary: $magenta-web-primary-dark,
+      accent: $magenta-web-accent-dark,
+      warn: $magenta-web-warn,
+    ),
+  )
+);
+
+$custom-typography: mat-typography-config(
+  $font-family: 'Open Sans',
+  $title: mat-typography-level(24px, 32px, bold),
+);
+
+@include mat-core($custom-typography);
+
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
+
 @include angular-material-theme($magenta-web-theme);
 
-/* You can add global styles to this file, and also import other style files */
+.theme-dark {
+  @include angular-material-theme($magenta-web-theme-dark);
+}
 
 html,
 body {
@@ -44,6 +68,7 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
 $breakpoints: (
   "phone": 640px,
   "tablet": 768px,

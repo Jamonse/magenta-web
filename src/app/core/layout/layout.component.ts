@@ -1,5 +1,7 @@
 import { MediaMatcher } from '@angular/cdk/layout';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Theme } from 'src/app/auth/model/theme.model';
 import { AuthFacade } from 'src/app/auth/state/auth.facade';
 
 @Component({
@@ -9,6 +11,8 @@ import { AuthFacade } from 'src/app/auth/state/auth.facade';
 export class LayoutComponent implements OnInit, OnDestroy {
   private _mobileQueryListener: () => void;
   mobileQuery: MediaQueryList;
+  preferedTheme!: Observable<Theme>;
+  theme = Theme;
 
   constructor(
     private changeDetector: ChangeDetectorRef,
@@ -20,7 +24,9 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.mobileQuery.addEventListener('change', this._mobileQueryListener);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.preferedTheme = this.authFacade.getTheme();
+  }
 
   ngOnDestroy(): void {
     this.mobileQuery.removeEventListener('change', this._mobileQueryListener);

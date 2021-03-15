@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { AppState } from 'src/app/state/app.state';
+import { Theme } from '../model/theme.model';
 import { loginRequest, logoutAction } from './auth.actions';
-import { getJwt } from './auth.selector';
+import { getJwt, getTheme } from './auth.selector';
 
 @Injectable({ providedIn: 'root' })
 export class AuthFacade {
@@ -19,5 +20,9 @@ export class AuthFacade {
 
   getJwt(): Observable<string | null> {
     return this.store.select(getJwt);
+  }
+
+  getTheme(): Observable<Theme> {
+    return this.store.select(getTheme);
   }
 }

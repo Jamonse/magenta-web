@@ -1,4 +1,8 @@
-<div class="navbar-container" [class.is-mobile]="mobileQuery.matches">
+<div
+  class="navbar-container"
+  [class.is-mobile]="mobileQuery.matches"
+  [ngClass]="{ 'theme-dark': (preferedTheme | async) === theme.DARK }"
+>
   <!-- Navbar -->
   <mat-toolbar class="navbar" color="primary">
     <button mat-icon-button (click)="sideNav.toggle()">
