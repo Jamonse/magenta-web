@@ -3,7 +3,13 @@
   fxLayout="row"
   fxLayoutAlign="center center"
 >
-  <form [formGroup]="loginForm" fxFlex="30%" fxFlex.sm="50%" fxFlex.xs="90%">
+  <form
+    (ngSubmit)="login()"
+    [formGroup]="loginForm"
+    fxFlex="30%"
+    fxFlex.sm="50%"
+    fxFlex.xs="90%"
+  >
     <mat-card>
       <mat-card-title> Login </mat-card-title>
       <mat-card-content>
@@ -24,8 +30,8 @@
         </mat-form-field>
         <app-password-field formControlName="password"> </app-password-field>
       </mat-card-content>
-      <mat-card-actions>
-        <button mat-raised-button (click)="login()" color="primary">
+      <mat-card-actions fxLayout="row" fxLayoutAlign="center center">
+        <button fxFlex="50" mat-raised-button color="primary" type="submit">
           Login
         </button>
       </mat-card-actions>

@@ -1,0 +1,10 @@
+<mat-nav-list>
+  <a
+    mat-list-item
+    *ngFor="let navOption of navOptions"
+    [routerLink]="navOption.navTo"
+  >
+    <mat-icon>{{ navOption.icon }}</mat-icon>
+    {{ navOption.name }}
+  </a>
+</mat-nav-list>

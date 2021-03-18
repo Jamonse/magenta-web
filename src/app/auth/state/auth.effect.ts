@@ -28,28 +28,32 @@ export class AuthEffects {
     // Login action effect
     this.actions$.pipe(
       ofType(loginRequest),
-      exhaustMap((
-        action // Throttle until first observable completes
-      ) =>
-        this.authService // Call the API with login data
-          .login(action.email, action.password)
-          .pipe(
-            map((data: UserData) => {
-              // Transform API response data to user data
-              const user: UserData = this.authService.createUserDetails(data);
-              this.authService.saveUserInLocalStorage(data);
-              this.sharedFacade.hideLoading();
-              return loginSuccess({ user, redirect: true }); // Return login success with user data
-            }),
-            catchError((err) => {
-              this.sharedFacade.hideLoading();
-              // Get error message with API error code
-              const errorMessage = this.authService.getErrorMessage(
-                err.error.message
-              ); // Display the error with error message service
-              return of(displayErrorMessage({ message: errorMessage }));
-            })
-          )
+      exhaustMap(
+        (
+          action // Throttle until first observable completes
+        ) => {
+          this.sharedFacade.displayLoading();
+          return this.authService // Call the API with login data
+            .login(action.email, action.password)
+            .pipe(
+              tap(),
+              map((data: UserData) => {
+                // Transform API response data to user data
+                const user: UserData = this.authService.createUserDetails(data);
+                this.authService.saveUserInLocalStorage(data);
+                this.sharedFacade.hideLoading();
+                return loginSuccess({ user, redirect: true }); // Return login success with user data
+              }),
+              catchError((err) => {
+                this.sharedFacade.hideLoading();
+                // Get error message with API error code
+                const errorMessage = this.authService.getErrorMessage(
+                  err.error.message
+                ); // Display the error with error message service
+                return of(displayErrorMessage({ message: errorMessage }));
+              })
+            );
+        }
       )
     )
   );
