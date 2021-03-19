@@ -3,8 +3,8 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { AppState } from 'src/app/state/app.state';
 import { Theme } from '../model/theme.model';
-import { loginRequest, logoutAction } from './auth.actions';
-import { getJwt, getTheme } from './auth.selector';
+import { loginRequest, logoutAction, refreshRequest } from './auth.actions';
+import { getJwt, getRefreshToken, getTheme } from './auth.selector';
 
 @Injectable({ providedIn: 'root' })
 export class AuthFacade {
@@ -18,8 +18,16 @@ export class AuthFacade {
     this.store.dispatch(logoutAction());
   }
 
+  refreshJwt(refreshToken: string): void {
+    this.store.dispatch(refreshRequest({ refreshToken: refreshToken }));
+  }
+
   getJwt(): Observable<string | null> {
     return this.store.select(getJwt);
+  }
+
+  getRefreshToken(): Observable<string | null> {
+    return this.store.select(getRefreshToken);
   }
 
   getTheme(): Observable<Theme> {

@@ -1,7 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { LOGIN_URL, LOGOUT_URL } from 'src/app/shared/utils/url.utils';
+import {
+  LOGIN_URL,
+  LOGOUT_URL,
+  REFRESH_URL,
+} from 'src/app/shared/utils/url.utils';
 import { UserData } from '../model/user-data.model';
 import { User } from '../model/user.model';
 
@@ -33,6 +37,10 @@ export class AuthService implements OnDestroy {
     localStorage.clear();
   }
 
+  refreshToken(refreshToken: string): Observable<string> {
+    return this.http.post<string>(REFRESH_URL, refreshToken);
+  }
+
   createUserDetails(data: UserData): UserData {
     return {
       user: data.user,
@@ -45,6 +53,8 @@ export class AuthService implements OnDestroy {
     switch (message) {
       case 'INVALID_CREDENTIALS':
         return 'Either email or password are invalid';
+      case 'RECONNECT':
+        return 'Please reconnect to the system';
       default:
         return 'An unexpected error occured, please try again later';
     }
@@ -57,6 +67,10 @@ export class AuthService implements OnDestroy {
       LOCAL_STORAGE_RT,
       JSON.stringify(userData.refreshToken)
     );
+  }
+
+  updateLocalStorageJwt(jwt: string): void {
+    localStorage.setItem(LOCAL_STORAGE_JWT, jwt);
   }
 
   getUserFromLocalStorage(): UserData | null {

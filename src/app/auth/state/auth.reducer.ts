@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { loginSuccess, logoutAction } from './auth.actions';
+import { loginSuccess, logoutAction, refreshSuccess } from './auth.actions';
 import { AuthState, initialState } from './auth.state';
 
 const _authReducer = createReducer(
@@ -9,6 +9,9 @@ const _authReducer = createReducer(
   }),
   on(logoutAction, (state: AuthState, action: any) => {
     return { ...state, user: null };
+  }),
+  on(refreshSuccess, (state: AuthState, action: any) => {
+    return { ...state, jwt: action.jwt };
   })
 );
 

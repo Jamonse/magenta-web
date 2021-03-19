@@ -5,7 +5,10 @@ import {
   loginRequest,
   loginSuccess,
   logoutAction,
+  refreshFail,
   refreshLogin,
+  refreshRequest,
+  refreshSuccess,
 } from './auth.actions';
 import { catchError, exhaustMap, map, mergeMap, tap } from 'rxjs/operators';
 import { AuthService } from '../service/auth.service';
@@ -36,7 +39,6 @@ export class AuthEffects {
           return this.authService // Call the API with login data
             .login(action.email, action.password)
             .pipe(
-              tap(),
               map((data: UserData) => {
                 // Transform API response data to user data
                 const user: UserData = this.authService.createUserDetails(data);
@@ -74,11 +76,36 @@ export class AuthEffects {
     );
   });
 
+  refreshAction$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(refreshRequest), // Refresh JWT using refresh token
+      exhaustMap((action) => {
+        this.sharedFacade.displayLoading();
+        return this.authService.refreshToken(action.refreshToken).pipe(
+          map((newJwt) => {
+            // Uppon successfull new jwt request, update local storage and return refresh success action
+            this.authService.updateLocalStorageJwt(newJwt);
+            this.sharedFacade.hideLoading();
+            return refreshSuccess({ jwt: newJwt });
+          }),
+          catchError((err) => {
+            // Uppon failure, get error message and return refresh fail action
+            this.sharedFacade.hideLoading();
+            const errorMessage = this.authService.getErrorMessage(
+              err.error.message
+            );
+            return of(refreshFail({ errorMessage: errorMessage }));
+          })
+        );
+      })
+    );
+  });
+
   loginFail$ = createEffect(
     () => {
       return this.actions$.pipe(
         ofType(loginFail),
-        map(() => {
+        tap(() => {
           this.router.navigateToLoginPage();
         })
       );
@@ -86,11 +113,21 @@ export class AuthEffects {
     { dispatch: false }
   );
 
+  refreshFail$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(refreshFail),
+      exhaustMap((action) => {
+        return of(displayErrorMessage({ message: action.errorMessage }));
+      })
+    );
+  });
+
   logoutAction$ = createEffect(
     () => {
       return this.actions$.pipe(
-        ofType(logoutAction),
+        ofType(logoutAction, refreshFail), // Refresh fail effect is simillar to logout
         tap(() => {
+          // Perform logout cleanup and navigation
           this.authService.logout();
           this.router.navigateToLoginPage();
         })

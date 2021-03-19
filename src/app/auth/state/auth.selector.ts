@@ -10,6 +10,10 @@ export const getJwt = createSelector(getAuthState, (state) => {
   return state.user ? state.user.jwt : null;
 });
 
+export const getRefreshToken = createSelector(getAuthState, (state) => {
+  return state.user ? state.user.refreshToken : null;
+});
+
 export const getTheme = createSelector(getAuthState, (state) => {
   return state.user ? state.user.user.preferedTheme : Theme.LIGHT;
 });
