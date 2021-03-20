@@ -2,7 +2,7 @@
   <span *ngFor="let navOption of navOptions">
     <a
       mat-list-item
-      *hasPermission="permission"
+      *hasPermission="navOption.requiredPermission"
       [routerLink]="navOption.navTo"
       style="font-weight: bold"
     >

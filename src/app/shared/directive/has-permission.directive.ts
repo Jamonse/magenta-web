@@ -6,7 +6,9 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { Permission } from 'src/app/auth/model/permission.model';
 import { Privilege } from 'src/app/auth/model/privilege.model';
+import { NONE } from 'src/app/auth/util/permission.util';
 import { AuthFacade } from '../../auth/state/auth.facade';
 
 @Directive({
@@ -20,20 +22,20 @@ export class HasPermissionDirective implements OnDestroy {
     private authFacade: AuthFacade
   ) {}
 
-  @Input() set hasPermission(requiredPermission: Privilege) {
-    this.authFacade.getPermissions().subscribe((permissions) => {
-      console.log(permissions);
-      if (permissions) {
-        const hasPermission = permissions.some(
-          (permission) =>
-            permission.name === requiredPermission.name &&
-            this.resolvePermissionLevel(
-              requiredPermission.level,
-              permission.level
-            )
+  @Input() set hasPermission(requiredPermission: Permission) {
+    if (requiredPermission === NONE) {
+      this.displayContent();
+      return;
+    }
+    this.authFacade.getPermissions().subscribe((privileges) => {
+      if (privileges) {
+        const hasPermission = privileges.some(
+          (privilege) =>
+            privilege.name === requiredPermission.name &&
+            Permission.resolvePrivilege(privilege, requiredPermission)
         );
         if (hasPermission) {
-          this.viewContainer.createEmbeddedView(this.templateRef);
+          this.displayContent();
         } else {
           this.viewContainer.clear();
         }
@@ -41,41 +43,8 @@ export class HasPermissionDirective implements OnDestroy {
     });
   }
 
-  private resolvePermissionLevel(
-    requiredPermission: string,
-    grantedPermission: string
-  ): boolean {
-    let requiredLevel = 0;
-    let grantedLevel = -1;
-    switch (requiredPermission) {
-      case 'ADMIN':
-        requiredLevel = 4;
-        break;
-      case 'WRITE':
-        requiredLevel = 3;
-        break;
-      case 'MANAGE':
-        requiredLevel = 2;
-        break;
-      case 'READ':
-        requiredLevel = 1;
-        break;
-    }
-    switch (grantedPermission) {
-      case 'ADMIN':
-        grantedLevel = 4;
-        break;
-      case 'WRITE':
-        grantedLevel = 3;
-        break;
-      case 'MANAGE':
-        grantedLevel = 2;
-        break;
-      case 'READ':
-        grantedLevel = 1;
-        break;
-    }
-    return grantedLevel >= requiredLevel;
+  private displayContent(): void {
+    this.viewContainer.createEmbeddedView(this.templateRef);
   }
 
   ngOnDestroy(): void {
