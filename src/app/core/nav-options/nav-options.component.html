@@ -1,10 +1,17 @@
 <mat-nav-list>
-  <a
-    mat-list-item
-    *ngFor="let navOption of navOptions"
-    [routerLink]="navOption.navTo"
-  >
-    <mat-icon>{{ navOption.icon }}</mat-icon>
-    {{ navOption.name }}
-  </a>
+  <span *ngFor="let navOption of navOptions">
+    <a
+      mat-list-item
+      *hasPermission="permission"
+      [routerLink]="navOption.navTo"
+      style="font-weight: bold"
+    >
+      <mat-icon
+        style="margin-right: 1rem"
+        [svgIcon]="navOption.icon"
+      ></mat-icon>
+      {{ navOption.name }}
+      <mat-divider></mat-divider>
+    </a>
+  </span>
 </mat-nav-list>

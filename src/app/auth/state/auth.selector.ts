@@ -17,3 +17,7 @@ export const getRefreshToken = createSelector(getAuthState, (state) => {
 export const getTheme = createSelector(getAuthState, (state) => {
   return state.user ? state.user.user.preferedTheme : Theme.LIGHT;
 });
+
+export const getPermissions = createSelector(getAuthState, (state) => {
+  return state.user ? state.user.user.privileges : null;
+});

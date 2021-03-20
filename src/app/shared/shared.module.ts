@@ -7,6 +7,7 @@ import { LoadingComponent } from './loading/loading.component';
 import { ErrorComponent } from './error/error.component';
 import { GeneralDialogComponent } from './general-dialog/general-dialog.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { HasPermissionDirective } from './directive/has-permission.directive';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     ErrorComponent,
     GeneralDialogComponent,
     PageNotFoundComponent,
+    HasPermissionDirective,
   ],
   imports: [CommonModule, MaterialModule, FormsModule, ReactiveFormsModule],
   exports: [
@@ -26,6 +28,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     LoadingComponent,
     ErrorComponent,
     PageNotFoundComponent,
+    HasPermissionDirective,
   ],
 })
 export class SharedModule {}

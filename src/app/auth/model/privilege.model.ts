@@ -1,6 +1,7 @@
 import { AccessPermission } from './access-permission.model';
 
-export interface Permission {
+export interface Privilege {
+  id: number;
   name: string;
-  accessPermission: AccessPermission;
+  level: string;
 }

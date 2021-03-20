@@ -8,13 +8,14 @@
     <button mat-icon-button (click)="sideNav.toggle()">
       <mat-icon>menu</mat-icon>
     </button>
-    <a class="navbar-logo" [routerLink]="['/']" matTooltip="Home">
+    <a fxFlex class="navbar-logo" [routerLink]="['/']" matTooltip="Home">
       <!-- Add Logo Here -->
     </a>
-    <span class="navbar-spacer"></span>
+
     <button mat-icon-button>
       <mat-icon>notifications</mat-icon>
     </button>
+    <mat-divider></mat-divider>
     <button class="profile-button" [matMenuTriggerFor]="profileMenu">
       <img src="" alt="" />
     </button>

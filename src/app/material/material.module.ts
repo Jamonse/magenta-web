@@ -27,7 +27,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatChipsModule } from '@angular/material/chips';
-import { MatIconModule } from '@angular/material/icon';
+import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatRippleModule } from '@angular/material/core';
@@ -42,6 +42,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @NgModule({
   declarations: [],
@@ -123,4 +124,41 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     FlexLayoutModule,
   ],
 })
-export class MaterialModule {}
+export class MaterialModule {
+  private iconsUrl: string = 'assets/icons/';
+  private icons: IconData[] = [
+    {
+      name: 'home',
+      path: `${this.iconsUrl}home.svg`,
+    },
+    {
+      name: 'hours',
+      path: `${this.iconsUrl}wall-clock.svg`,
+    },
+    {
+      name: 'projects',
+      path: `${this.iconsUrl}briefcase.svg`,
+    },
+    {
+      name: 'accounts',
+      path: `${this.iconsUrl}delivery.svg`,
+    },
+    {
+      name: 'users',
+      path: `${this.iconsUrl}user.svg`,
+    },
+  ];
+  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
+    this.icons.forEach((iconData) => {
+      iconRegistry.addSvgIcon(
+        iconData.name,
+        sanitizer.bypassSecurityTrustResourceUrl(iconData.path)
+      );
+    });
+  }
+}
+
+interface IconData {
+  name: string;
+  path: string;
+}

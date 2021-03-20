@@ -2,9 +2,15 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { AppState } from 'src/app/state/app.state';
+import { Privilege } from '../model/privilege.model';
 import { Theme } from '../model/theme.model';
 import { loginRequest, logoutAction, refreshRequest } from './auth.actions';
-import { getJwt, getRefreshToken, getTheme } from './auth.selector';
+import {
+  getJwt,
+  getPermissions,
+  getRefreshToken,
+  getTheme,
+} from './auth.selector';
 
 @Injectable({ providedIn: 'root' })
 export class AuthFacade {
@@ -32,5 +38,9 @@ export class AuthFacade {
 
   getTheme(): Observable<Theme> {
     return this.store.select(getTheme);
+  }
+
+  getPermissions(): Observable<Privilege[] | null> {
+    return this.store.select(getPermissions);
   }
 }

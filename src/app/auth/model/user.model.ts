@@ -1,4 +1,4 @@
-import { Permission } from './permission.model';
+import { Privilege } from './privilege.model';
 import { Theme } from './theme.model';
 
 export interface User {
@@ -8,5 +8,5 @@ export interface User {
   email: string;
   phoneNumber: string;
   preferedTheme: Theme;
-  permissions: Permission[];
+  privileges: Privilege[];
 }
