@@ -13,6 +13,7 @@ const routes: Routes = [
     loadChildren: () =>
       import('./core/core.module').then((module) => module.CoreModule),
   },
+  { path: 'posts', loadChildren: () => import('./posts/posts.module').then(m => m.PostsModule) },
   {
     path: '**',
     component: PageNotFoundComponent,

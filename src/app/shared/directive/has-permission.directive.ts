@@ -7,7 +7,6 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Permission } from 'src/app/auth/model/permission.model';
-import { Privilege } from 'src/app/auth/model/privilege.model';
 import { NONE } from 'src/app/auth/util/permission.util';
 import { AuthFacade } from '../../auth/state/auth.facade';
 
@@ -27,20 +26,22 @@ export class HasPermissionDirective implements OnDestroy {
       this.displayContent();
       return;
     }
-    this.authFacade.getPermissions().subscribe((privileges) => {
-      if (privileges) {
-        const hasPermission = privileges.some(
-          (privilege) =>
-            privilege.name === requiredPermission.name &&
-            Permission.resolvePrivilege(privilege, requiredPermission)
-        );
-        if (hasPermission) {
-          this.displayContent();
-        } else {
-          this.viewContainer.clear();
+    this.permissionSubscription = this.authFacade
+      .getPermissions()
+      .subscribe((privileges) => {
+        if (privileges) {
+          const hasPermission = privileges.some(
+            (privilege) =>
+              privilege.name === requiredPermission.name &&
+              Permission.resolvePrivilege(privilege, requiredPermission)
+          );
+          if (hasPermission) {
+            this.displayContent();
+          } else {
+            this.viewContainer.clear();
+          }
         }
-      }
-    });
+      });
   }
 
   private displayContent(): void {

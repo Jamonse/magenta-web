@@ -5,7 +5,7 @@ import {
   LOGIN_URL,
   LOGOUT_URL,
   REFRESH_URL,
-} from 'src/app/shared/utils/url.utils';
+} from 'src/app/shared/utils/url.util';
 import { UserData } from '../model/user-data.model';
 import { User } from '../model/user.model';
 
