@@ -23,18 +23,20 @@ export class HasPermissionDirective implements OnDestroy {
 
   @Input() set hasPermission(requiredPermission: Permission) {
     if (requiredPermission === NONE) {
+      // Permission required is NONE (no permission)
       this.displayContent();
       return;
-    }
+    } // Get user permissions from state
     this.permissionSubscription = this.authFacade
       .getPermissions()
       .subscribe((privileges) => {
         if (privileges) {
+          // Check if required given permission matching retreived permissions
           const hasPermission = privileges.some(
             (privilege) =>
               privilege.name === requiredPermission.name &&
               Permission.resolvePrivilege(privilege, requiredPermission)
-          );
+          ); // Display content if it does, otherwise hide content
           if (hasPermission) {
             this.displayContent();
           } else {

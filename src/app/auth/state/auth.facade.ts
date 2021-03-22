@@ -4,12 +4,13 @@ import { Observable } from 'rxjs';
 import { AppState } from 'src/app/state/app.state';
 import { Privilege } from '../model/privilege.model';
 import { Theme } from '../model/theme.model';
+import { User } from '../model/user.model';
 import { loginRequest, logoutAction, refreshRequest } from './auth.actions';
 import {
   getJwt,
   getPermissions,
   getRefreshToken,
-  getTheme,
+  getUser,
 } from './auth.selector';
 
 @Injectable({ providedIn: 'root' })
@@ -36,8 +37,8 @@ export class AuthFacade {
     return this.store.select(getRefreshToken);
   }
 
-  getTheme(): Observable<Theme> {
-    return this.store.select(getTheme);
+  getUser(): Observable<User | null> {
+    return this.store.select(getUser);
   }
 
   getPermissions(): Observable<Privilege[] | null> {

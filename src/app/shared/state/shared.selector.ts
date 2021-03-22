@@ -5,9 +5,14 @@ export const SHARED_STATE_NAME = 'shared';
 
 const getSharedState = createFeatureSelector<SharedState>(SHARED_STATE_NAME);
 
-export const getLoading = createSelector(
+export const getGeneralLoading = createSelector(
   getSharedState,
-  (state) => state.loading
+  (state) => state.generalLoading
+);
+
+export const getContentLoading = createSelector(
+  getSharedState,
+  (state) => state.contentLoading
 );
 
 export const getErrorMessage = createSelector(

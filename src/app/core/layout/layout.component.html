@@ -1,7 +1,8 @@
 <div
+  *ngIf="user | async as user"
   class="navbar-container"
-  [class.is-mobile]="mobileQuery.matches"
-  [ngClass]="{ 'theme-dark': (preferedTheme | async) === theme.DARK }"
+  [class.is-mobile]=""
+  [ngClass]="{ 'theme-dark': user.preferedTheme === theme.DARK }"
 >
   <!-- Navbar -->
   <mat-toolbar class="navbar" color="primary">
@@ -27,6 +28,9 @@
         <span>Logout</span>
       </a>
     </mat-menu>
+    <span *ngIf="!(mobileQuery | async)">{{
+      user.firstName + " " + user.lastName
+    }}</span>
   </mat-toolbar>
   <mat-sidenav-container class="sidenav-container">
     <!-- Sidenav Menu -->
@@ -34,14 +38,15 @@
       #sideNav
       class="sidenav"
       fixedTopGap="56"
-      [opened]="!mobileQuery.matches"
-      [mode]="mobileQuery.matches ? 'over' : 'side'"
-      [fixedInViewport]="mobileQuery.matches"
+      [opened]="!(mobileQuery | async)"
+      [mode]="(mobileQuery | async) ? 'over' : 'side'"
+      [fixedInViewport]="mobileQuery | async"
     >
       <app-nav-options></app-nav-options>
     </mat-sidenav>
     <!-- Content -->
     <mat-sidenav-content class="sidenav-content">
+      <app-content-loading></app-content-loading>
       <router-outlet></router-outlet>
     </mat-sidenav-content>
   </mat-sidenav-container>

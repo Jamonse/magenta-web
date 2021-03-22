@@ -6,10 +6,7 @@
       [routerLink]="navOption.navTo"
       style="font-weight: bold"
     >
-      <mat-icon
-        style="margin-right: 1rem"
-        [svgIcon]="navOption.icon"
-      ></mat-icon>
+      <mat-icon class="menu-option-icon" [svgIcon]="navOption.icon"></mat-icon>
       {{ navOption.name }}
       <mat-divider></mat-divider>
     </a>

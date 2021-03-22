@@ -16,6 +16,6 @@ const _postsReducer = createReducer(
   )
 );
 
-export function PostsReducer(state: any, action: any): PostState {
+export function PostsReducer(state: PostState, action: any): PostState {
   return _postsReducer(state, action);
 }

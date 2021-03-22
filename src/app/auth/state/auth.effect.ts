@@ -35,7 +35,7 @@ export class AuthEffects {
         (
           action // Throttle until first observable completes
         ) => {
-          this.sharedFacade.displayLoading();
+          this.sharedFacade.displayGeneralLoading();
           return this.authService // Call the API with login data
             .login(action.email, action.password)
             .pipe(
@@ -43,11 +43,10 @@ export class AuthEffects {
                 // Transform API response data to user data
                 const user: UserData = this.authService.createUserDetails(data);
                 this.authService.saveUserInLocalStorage(data);
-                this.sharedFacade.hideLoading();
                 return loginSuccess({ user, redirect: true }); // Return login success with user data
               }),
               catchError((err) => {
-                this.sharedFacade.hideLoading();
+                this.sharedFacade.hideGeneralLoading();
                 // Get error message with API error code
                 const errorMessage = this.authService.getErrorMessage(
                   err.error.message
@@ -80,17 +79,17 @@ export class AuthEffects {
     return this.actions$.pipe(
       ofType(refreshRequest), // Refresh JWT using refresh token
       exhaustMap((action) => {
-        this.sharedFacade.displayLoading();
+        this.sharedFacade.displayGeneralLoading();
         return this.authService.refreshToken(action.refreshToken).pipe(
           map((newJwt) => {
             // Uppon successfull new jwt request, update local storage and return refresh success action
             this.authService.updateLocalStorageJwt(newJwt);
-            this.sharedFacade.hideLoading();
+            this.sharedFacade.hideGeneralLoading();
             return refreshSuccess({ jwt: newJwt });
           }),
           catchError((err) => {
             // Uppon failure, get error message and return refresh fail action
-            this.sharedFacade.hideLoading();
+            this.sharedFacade.hideGeneralLoading();
             const errorMessage = this.authService.getErrorMessage(
               err.error.message
             );
@@ -143,6 +142,7 @@ export class AuthEffects {
         ofType(loginSuccess),
         tap((action) => {
           if (action.redirect) {
+            this.sharedFacade.hideGeneralLoading();
             this.router.navigateToHomePage();
           }
         })

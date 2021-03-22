@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
@@ -8,6 +9,6 @@ import { NavOptionsComponent } from './nav-options/nav-options.component';
 
 @NgModule({
   declarations: [HomeComponent, LayoutComponent, NavOptionsComponent],
-  imports: [SharedModule, CoreRoutingModule, RouterModule],
+  imports: [CommonModule, SharedModule, CoreRoutingModule, RouterModule],
 })
 export class CoreModule {}

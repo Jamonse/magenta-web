@@ -1,9 +1,11 @@
 export interface SharedState {
-  loading: boolean;
+  generalLoading: boolean;
+  contentLoading: boolean;
   errorMessage: string;
 }
 
 export const initialState: SharedState = {
-  loading: false,
+  generalLoading: false,
+  contentLoading: false,
   errorMessage: '',
 };

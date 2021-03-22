@@ -1,5 +1,4 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { Theme } from '../model/theme.model';
 import { AuthState } from './auth.state';
 
 export const AUTH_STATE_NAME = 'auth';
@@ -14,8 +13,8 @@ export const getRefreshToken = createSelector(getAuthState, (state) => {
   return state.user ? state.user.refreshToken : null;
 });
 
-export const getTheme = createSelector(getAuthState, (state) => {
-  return state.user ? state.user.user.preferedTheme : Theme.LIGHT;
+export const getUser = createSelector(getAuthState, (state) => {
+  return state.user ? state.user.user : null;
 });
 
 export const getPermissions = createSelector(getAuthState, (state) => {

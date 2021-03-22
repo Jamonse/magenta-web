@@ -1,35 +1,29 @@
-import { MediaMatcher } from '@angular/cdk/layout';
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Theme } from 'src/app/auth/model/theme.model';
+import { User } from 'src/app/auth/model/user.model';
 import { AuthFacade } from 'src/app/auth/state/auth.facade';
+import { MobileQueryService } from 'src/app/shared/service/mobile-query.service';
+import { BreakPointType } from 'src/app/shared/utils/breakpoint.type';
 
 @Component({
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss'],
 })
-export class LayoutComponent implements OnInit, OnDestroy {
-  private _mobileQueryListener: () => void;
-  mobileQuery: MediaQueryList;
-  preferedTheme!: Observable<Theme>;
+export class LayoutComponent implements OnInit {
+  mobileQuery: Observable<boolean>;
+  user!: Observable<User | null>;
   theme = Theme;
 
   constructor(
-    private changeDetector: ChangeDetectorRef,
-    private authFacade: AuthFacade,
-    private media: MediaMatcher
+    private queryService: MobileQueryService,
+    private authFacade: AuthFacade
   ) {
-    this.mobileQuery = this.media.matchMedia('(max-width: 1000px)');
-    this._mobileQueryListener = () => changeDetector.detectChanges();
-    this.mobileQuery.addEventListener('change', this._mobileQueryListener);
+    this.mobileQuery = this.queryService.getMobileQuery(BreakPointType.MD);
   }
 
   ngOnInit(): void {
-    this.preferedTheme = this.authFacade.getTheme();
-  }
-
-  ngOnDestroy(): void {
-    this.mobileQuery.removeEventListener('change', this._mobileQueryListener);
+    this.user = this.authFacade.getUser();
   }
 
   logout(): void {
