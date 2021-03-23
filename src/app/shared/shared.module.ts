@@ -9,6 +9,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { HasPermissionDirective } from './directive/has-permission.directive';
 import { GeneralLoadingComponent } from './loading/general-loading/general-loading.component';
 import { ContentLoadingComponent } from './loading/content-loading/content-loading.component';
+import { SearchContainerComponent } from './search-container/search-container.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { ContentLoadingComponent } from './loading/content-loading/content-loadi
     HasPermissionDirective,
     GeneralLoadingComponent,
     ContentLoadingComponent,
+    SearchContainerComponent,
   ],
   imports: [CommonModule, MaterialModule, FormsModule, ReactiveFormsModule],
   exports: [
@@ -32,6 +34,7 @@ import { ContentLoadingComponent } from './loading/content-loading/content-loadi
     HasPermissionDirective,
     GeneralLoadingComponent,
     ContentLoadingComponent,
+    SearchContainerComponent,
   ],
 })
 export class SharedModule {}

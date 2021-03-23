@@ -1,1 +1,5 @@
-<p>home works!</p>
+<app-search-container
+  [searchLabel]="'Search in newsfeed...'"
+  [editPermission]="editPermission"
+  (editEvent)="editButtonPressed($event)"
+></app-search-container>

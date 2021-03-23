@@ -9,4 +9,5 @@ export interface User {
   phoneNumber: string;
   preferedTheme: Theme;
   privileges: Privilege[];
+  profileImage: File;
 }

@@ -1,7 +1,7 @@
 <div
   *ngIf="user | async as user"
   class="navbar-container"
-  [class.is-mobile]=""
+  [class.is-mobile]="mobileQuery | async"
   [ngClass]="{ 'theme-dark': user.preferedTheme === theme.DARK }"
 >
   <!-- Navbar -->
@@ -17,8 +17,18 @@
       <mat-icon>notifications</mat-icon>
     </button>
     <mat-divider></mat-divider>
-    <button class="profile-button" [matMenuTriggerFor]="profileMenu">
-      <img src="" alt="" />
+    <button
+      mat-icon-button
+      class="profile-button"
+      [matMenuTriggerFor]="profileMenu"
+    >
+      <img *ngIf="user.profileImage" ; else noImage [src]="user.profileImage" />
+      <span #noImage class="profile-no-image">
+        {{
+          user.firstName.toUpperCase().charAt(0) +
+            user.lastName.toUpperCase().charAt(0)
+        }}
+      </span>
     </button>
     <mat-menu #profileMenu>
       <a mat-menu-item>
@@ -28,7 +38,7 @@
         <span>Logout</span>
       </a>
     </mat-menu>
-    <span *ngIf="!(mobileQuery | async)">{{
+    <span style="margin-left: 0.5rem" *ngIf="!(mobileQuery | async)">{{
       user.firstName + " " + user.lastName
     }}</span>
   </mat-toolbar>

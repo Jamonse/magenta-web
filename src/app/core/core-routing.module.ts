@@ -8,7 +8,14 @@ const routes: Routes = [
   {
     path: '',
     component: LayoutComponent,
-    children: [{ path: '', component: HomeComponent }],
+    children: [
+      { path: '', component: HomeComponent },
+      {
+        path: 'posts',
+        loadChildren: () =>
+          import('../posts/posts.module').then((module) => module.PostsModule),
+      },
+    ],
   },
 ];
 

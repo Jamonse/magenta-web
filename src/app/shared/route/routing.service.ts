@@ -14,4 +14,8 @@ export class RoutingService {
   navigateToHomePage(): void {
     this.router.navigate(['']);
   }
+
+  navigateToPostsEditPage(): void {
+    this.router.navigate(['posts']);
+  }
 }

@@ -1,7 +1,3 @@
-.navbar-spacer {
-  flex: 1 1 auto;
-}
-
 .navbar {
   z-index: 2;
 }
@@ -17,7 +13,7 @@
 }
 
 .is-mobile .navbar {
-  position: fixed;
+  position: sticky;
   z-index: 2;
 }
 
@@ -25,7 +21,7 @@
   flex: 1;
 }
 
-.is-mobile .navbar-sidenav-container {
+.is-mobile .sidenav-container {
   flex: 1 0 auto;
 }
 
@@ -35,6 +31,7 @@ mat-sidenav {
   box-shadow: 6px 0 6px rgba(0, 0, 0, 0.1);
 }
 
-a.mat-list-item.active {
-  background: rgba(0, 0, 0, 0.04);
+.profile-no-image {
+  font-weight: bold;
+  font-size: 1rem;
 }
