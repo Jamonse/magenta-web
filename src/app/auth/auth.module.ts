@@ -7,7 +7,6 @@ import { AuthReducer } from './state/auth.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { AuthRoutingModule } from './auth-routing.module';
 import { RouterModule } from '@angular/router';
-import { HasPermissionDirective } from '../shared/directive/has-permission.directive';
 
 @NgModule({
   declarations: [LoginComponent],

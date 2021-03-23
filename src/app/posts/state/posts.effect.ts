@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, mergeMap } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { catchError, finalize, map, mergeMap } from 'rxjs/operators';
+import { displayErrorMessage } from 'src/app/shared/state/shared.actions';
 import { SharedFacade } from 'src/app/shared/state/shared.facade';
 import { PostsService } from '../service/posts.service';
 import { loadPosts, loadPostsSuccess } from './post.action';
@@ -17,7 +19,7 @@ export class PostsEffect {
     this.action$.pipe(
       ofType(loadPosts),
       mergeMap((action) => {
-        this.sharedFacade.displayLoading();
+        this.sharedFacade.displayContentLoading();
         return this.postsService
           .getPostsPage(
             action.pageIndex,
@@ -26,9 +28,17 @@ export class PostsEffect {
             action.asc
           )
           .pipe(
-            map((postsResponse) => loadPostsSuccess({ posts: postsResponse }))
+            map((postsResponse) =>
+              loadPostsSuccess({ postsPageData: postsResponse })
+            )
           );
-      })
+      }),
+      catchError((err) => {
+        return of(
+          displayErrorMessage({ message: 'An unexpected error occurred' })
+        );
+      }),
+      finalize(() => this.sharedFacade.hideContentLoading())
     )
   );
 }

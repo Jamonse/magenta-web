@@ -38,7 +38,7 @@ export const loadPosts = createAction(
 
 export const loadPostsSuccess = createAction(
   LOAD_POSTS_SUCCESS,
-  props<{ posts: PostsResponse }>()
+  props<{ postsPageData: PostsResponse }>()
 );
 
 export const loadPost = createAction(LOAD_POST, props<{ postId: number }>());

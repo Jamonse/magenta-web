@@ -1,2 +1,7 @@
-<app-search-container [searchLabel]="'Search post...'" [editButtonIcon]="'add'">
+<app-search-container
+  *ngIf="postsData | async as postsData"
+  [searchLabel]="'Search post...'"
+  [editButtonIcon]="'add'"
+>
+  <app-post *ngFor="let post of postsData.content"></app-post>
 </app-search-container>

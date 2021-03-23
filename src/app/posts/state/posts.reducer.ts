@@ -11,6 +11,8 @@ const _postsReducer = createReducer(
         ...state,
         posts: action.posts,
         totalPosts: action.totalElements,
+        pageIndex: action.number,
+        pageSize: action.size,
       };
     }
   )

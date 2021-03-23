@@ -1,10 +1,9 @@
 import {
   Component,
-  OnInit,
-  ChangeDetectionStrategy,
   Input,
   Output,
   EventEmitter,
+  OnDestroy,
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
@@ -16,9 +15,8 @@ import { NONE } from 'src/app/auth/util/permission.util';
   selector: 'app-search-container',
   templateUrl: './search-container.component.html',
   styleUrls: ['./search-container.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SearchContainerComponent {
+export class SearchContainerComponent implements OnDestroy {
   // Set permission for edit button to appear
   @Input() editPermission: Permission = NONE;
   // Set icon for edit button
@@ -77,5 +75,11 @@ export class SearchContainerComponent {
 
   searchTextChanged(): void {
     this.searchTextEvent.emit(this.searchText);
+  }
+
+  ngOnDestroy(): void {
+    if (this.searchTextFormSubscription) {
+      this.searchTextFormSubscription.unsubscribe();
+    }
   }
 }

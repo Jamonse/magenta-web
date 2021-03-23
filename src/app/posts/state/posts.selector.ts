@@ -1,10 +1,17 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { from } from 'rxjs';
 import { PostState } from './post.state';
+import { PostsResponse } from '../model/posts.response';
 
 export const POSTS_STATE_NAME = 'posts';
 
 export const getPostsState = createFeatureSelector<PostState>(POSTS_STATE_NAME);
 
 export const getPostsPage = createSelector(getPostsState, (state) => {
-  return state.posts ? state.posts : null;
+  return state.posts
+    ? ({
+        content: state.posts,
+        totalElements: state.totalPosts,
+      } as PostsResponse)
+    : null;
 });
