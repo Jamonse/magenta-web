@@ -10,6 +10,8 @@ import { Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { Permission } from 'src/app/auth/model/permission.model';
 import { NONE } from 'src/app/auth/util/permission.util';
+import { SortEvent } from '../events/sort.event';
+import { SortInterface } from '../utils/sort.interface';
 
 @Component({
   selector: 'app-search-container',
@@ -22,7 +24,7 @@ export class SearchContainerComponent implements OnDestroy {
   // Set icon for edit button
   @Input() editButtonIcon: string = 'edit';
   // Set sorting options
-  @Input() sortOptions: string[] = [];
+  @Input() sortOptions: SortInterface[] = [];
   // Set label of search input
   @Input() searchLabel: string = 'Search...';
   // Search results return from search operation
@@ -35,8 +37,7 @@ export class SearchContainerComponent implements OnDestroy {
   searchText!: string;
 
   @Output() editEvent: EventEmitter<any> = new EventEmitter();
-  @Output() sortOptionEvent: EventEmitter<string> = new EventEmitter();
-  @Output() sortDirectionEvent: EventEmitter<boolean> = new EventEmitter();
+  @Output() sortEvent: EventEmitter<SortEvent> = new EventEmitter();
   @Output() searchTextEvent: EventEmitter<string> = new EventEmitter();
 
   searchTextForm: FormGroup;
@@ -64,13 +65,16 @@ export class SearchContainerComponent implements OnDestroy {
     this.editEvent.emit();
   }
 
-  sortOptionChanged(): void {
-    this.sortOptionEvent.emit(this.sortOption);
-  }
-
-  sortDirectionChanged(): void {
-    this.sortDirection = !this.sortDirection;
-    this.sortDirectionEvent.emit(this.sortDirection);
+  sortOptionChanged(sortType?: string): void {
+    if (sortType) {
+      this.sortOption = sortType;
+    } else {
+      this.sortDirection = !this.sortDirection;
+    }
+    this.sortEvent.emit({
+      sortOption: this.sortOption,
+      sortDirection: this.sortDirection,
+    });
   }
 
   searchTextChanged(): void {

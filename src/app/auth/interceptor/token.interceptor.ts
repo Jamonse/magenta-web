@@ -4,11 +4,11 @@ import {
   HttpHandler,
   HttpEvent,
   HttpInterceptor,
-  HttpResponse,
+  HttpErrorResponse,
 } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { AuthFacade } from '../state/auth.facade';
-import { catchError, exhaustMap, switchMap, take } from 'rxjs/operators';
+import { catchError, exhaustMap, mergeMap, take } from 'rxjs/operators';
 import { refreshFail } from '../state/auth.actions';
 
 export const TOKEN_PREFIX = 'Bearer';
@@ -35,7 +35,7 @@ export class TokenInterceptor implements HttpInterceptor {
         return next.handle(request).pipe(
           catchError((err) => {
             // Error might be an invalid JWT
-            if (err instanceof HttpResponse && err.status === 403) {
+            if (err instanceof HttpErrorResponse && err.status === 403) {
               return this.handleError(err, request, next);
             }
             return throwError(err);
@@ -54,23 +54,13 @@ export class TokenInterceptor implements HttpInterceptor {
   }
 
   private handleError(
-    err: HttpResponse<any>,
+    err: HttpErrorResponse,
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<any> {
-    if (err.body.error.message !== INVALID_TOKEN) {
+    if (err.error !== INVALID_TOKEN) {
       return throwError(err); // Error is not an invalid jwt
     }
-    return this.authFacade.getRefreshToken().pipe(
-      take(1), // Get refresh token
-      switchMap((refreshToken) => {
-        if (refreshToken) {
-          // Perform JWT refresh using refresh token
-          this.authFacade.refreshJwt(refreshToken);
-          return next.handle(request);
-        } // Refresh token itself is not valid
-        return of(refreshFail({ errorMessage: UNABLE_TO_REFRESH }));
-      })
-    );
+    return of();
   }
 }

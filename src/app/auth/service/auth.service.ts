@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import {
   LOGIN_URL,
   LOGOUT_URL,
@@ -16,8 +16,7 @@ export const LOCAL_STORAGE_RT = 'refreshToken';
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService implements OnDestroy {
-  logoutSubscription!: Subscription;
+export class AuthService {
   constructor(private http: HttpClient) {}
 
   login(email: string, password: string): Observable<UserData> {
@@ -27,14 +26,11 @@ export class AuthService implements OnDestroy {
     });
   }
 
-  logout(): void {
+  logout() {
     // Send refresh token to API on logout
     const refreshToken = localStorage.getItem(LOCAL_STORAGE_RT);
-    this.logoutSubscription = this.http
-      .post(LOGOUT_URL, refreshToken)
-      .subscribe();
-    // Clear local storage
-    localStorage.clear();
+    this.clearLocalStorage();
+    return this.http.post(LOGOUT_URL, refreshToken);
   }
 
   refreshToken(refreshToken: string): Observable<string> {
@@ -62,11 +58,8 @@ export class AuthService implements OnDestroy {
 
   saveUserInLocalStorage(userData: UserData): void {
     localStorage.setItem(LOCAL_STORAGE_USER, JSON.stringify(userData.user));
-    localStorage.setItem(LOCAL_STORAGE_JWT, JSON.stringify(userData.jwt));
-    localStorage.setItem(
-      LOCAL_STORAGE_RT,
-      JSON.stringify(userData.refreshToken)
-    );
+    localStorage.setItem(LOCAL_STORAGE_JWT, userData.jwt);
+    localStorage.setItem(LOCAL_STORAGE_RT, userData.refreshToken);
   }
 
   updateLocalStorageJwt(jwt: string): void {
@@ -89,9 +82,7 @@ export class AuthService implements OnDestroy {
     return null;
   }
 
-  ngOnDestroy(): void {
-    if (this.logoutSubscription) {
-      this.logoutSubscription.unsubscribe();
-    }
+  clearLocalStorage(): void {
+    localStorage.clear();
   }
 }

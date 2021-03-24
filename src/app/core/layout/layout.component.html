@@ -38,7 +38,7 @@
         <span>Logout</span>
       </a>
     </mat-menu>
-    <span style="margin-left: 0.5rem" *ngIf="!(mobileQuery | async)">{{
+    <span style="margin-left: 0.5rem" fxHide.xs>{{
       user.firstName + " " + user.lastName
     }}</span>
   </mat-toolbar>

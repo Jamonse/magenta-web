@@ -24,22 +24,33 @@
       <mat-icon>{{ editButtonIcon }}</mat-icon>
     </button>
   </div>
-  <div *ngIf="!!!sortOptions" fxLayout="row" fxLayoutAlign="center center">
+  <div
+    *ngIf="sortOptions.length > 0"
+    fxLayout="row"
+    fxLayoutAlign="center center"
+  >
     <mat-icon style="margin-left: 1rem; margin-right: 1rem">sort</mat-icon>
     <mat-form-field fxFlex="50" fxFlex.xs="85">
       <mat-label>
         {{ sortOptionsLabel }}
       </mat-label>
-      <mat-select [disabled]="!!sortOptions">
-        <mat-option *ngFor="let option of sortOptions" [value]="option">
-          {{ option }}
+      <mat-select
+        [disabled]="sortOptions.length <= 0"
+        (selectionChange)="sortOptionChanged($event.value)"
+      >
+        <mat-option
+          *ngFor="let option of sortOptions"
+          [value]="option.sortType"
+        >
+          {{ option.name }}
         </mat-option>
       </mat-select>
     </mat-form-field>
     <button
+      [disabled]="!sortOption"
       style="margin-left: 1rem; margin-right: 1rem"
       mat-mini-fab
-      (click)="sortDirectionChanged()"
+      (click)="sortOptionChanged()"
     >
       <mat-icon>
         {{ sortDirection ? "keyboard_arrow_up" : "keyboard_arrow_down" }}

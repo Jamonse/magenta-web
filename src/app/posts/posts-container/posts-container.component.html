@@ -1,7 +1,29 @@
-<app-search-container
+<div
   *ngIf="postsData | async as postsData"
-  [searchLabel]="'Search post...'"
-  [editButtonIcon]="'add'"
+  fxLayout="column"
+  style="height: 100%"
 >
-  <app-post *ngFor="let post of postsData.content"></app-post>
-</app-search-container>
+  <app-search-container
+    [searchLabel]="'Search post...'"
+    [editButtonIcon]="'add'"
+    [sortOptions]="sortOptions"
+    (sortEvent)="sortEvent($event)"
+  >
+  </app-search-container>
+  <div
+    style="margin: 1rem"
+    fxLayout="row wrap"
+    fxLayoutAlign="flex-start"
+    fxLayoutGap="1rem"
+  >
+    <app-post *ngFor="let post of postsData.content" [post]="post"></app-post>
+  </div>
+  <div fxFlex="60"></div>
+  <mat-paginator
+    [pageIndex]="postsData.pageNumber"
+    [pageSize]="postsData.pageSize"
+    [length]="postsData.totalElements"
+    [pageSizeOptions]="pageSizeOptions"
+    (page)="pageEvent($event)"
+  ></mat-paginator>
+</div>

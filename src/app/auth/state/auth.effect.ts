@@ -10,7 +10,14 @@ import {
   refreshRequest,
   refreshSuccess,
 } from './auth.actions';
-import { catchError, exhaustMap, map, mergeMap, tap } from 'rxjs/operators';
+import {
+  catchError,
+  exhaustMap,
+  finalize,
+  map,
+  mergeMap,
+  tap,
+} from 'rxjs/operators';
 import { AuthService } from '../service/auth.service';
 import { UserData } from '../model/user-data.model';
 import { SharedFacade } from 'src/app/shared/state/shared.facade';
@@ -82,19 +89,19 @@ export class AuthEffects {
         this.sharedFacade.displayGeneralLoading();
         return this.authService.refreshToken(action.refreshToken).pipe(
           map((newJwt) => {
+            console.log(newJwt);
             // Uppon successfull new jwt request, update local storage and return refresh success action
             this.authService.updateLocalStorageJwt(newJwt);
-            this.sharedFacade.hideGeneralLoading();
             return refreshSuccess({ jwt: newJwt });
           }),
           catchError((err) => {
             // Uppon failure, get error message and return refresh fail action
-            this.sharedFacade.hideGeneralLoading();
             const errorMessage = this.authService.getErrorMessage(
               err.error.message
             );
             return of(refreshFail({ errorMessage: errorMessage }));
-          })
+          }),
+          finalize(() => this.sharedFacade.hideGeneralLoading())
         );
       })
     );
@@ -125,10 +132,10 @@ export class AuthEffects {
     () => {
       return this.actions$.pipe(
         ofType(logoutAction, refreshFail), // Refresh fail effect is simillar to logout
-        tap(() => {
+        exhaustMap(() => {
           // Perform logout cleanup and navigation
-          this.authService.logout();
           this.router.navigateToLoginPage();
+          return this.authService.logout();
         })
       );
     },

@@ -30,15 +30,15 @@ export class PostsEffect {
           .pipe(
             map((postsResponse) =>
               loadPostsSuccess({ postsPageData: postsResponse })
-            )
+            ),
+            catchError((err) =>
+              of(
+                displayErrorMessage({ message: 'An unexpected error occurred' })
+              )
+            ),
+            finalize(() => this.sharedFacade.hideContentLoading())
           );
-      }),
-      catchError((err) => {
-        return of(
-          displayErrorMessage({ message: 'An unexpected error occurred' })
-        );
-      }),
-      finalize(() => this.sharedFacade.hideContentLoading())
+      })
     )
   );
 }
