@@ -14,6 +14,7 @@ export interface PostState {
   pageSize: number;
   sortBy: PostSortType;
   asc: boolean;
+  loadedPost: Post | null;
 }
 
 export const initialState: PostState = {
@@ -24,4 +25,5 @@ export const initialState: PostState = {
   pageSize: INITIAL_PAGE_SIZE,
   sortBy: POST_INITIAL_SORT_TYPE,
   asc: INITIAL_ASC,
+  loadedPost: null,
 };

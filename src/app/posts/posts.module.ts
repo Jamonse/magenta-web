@@ -10,9 +10,10 @@ import { StoreModule } from '@ngrx/store';
 import { POSTS_STATE_NAME } from './state/posts.selector';
 import { PostsReducer } from './state/posts.reducer';
 import { PostsEffect } from './state/posts.effect';
+import { PostDataComponent } from './post-data/post-data.component';
 
 @NgModule({
-  declarations: [PostsContainerComponent, PostComponent],
+  declarations: [PostsContainerComponent, PostComponent, PostDataComponent],
   imports: [
     CommonModule,
     PostsRoutingModule,

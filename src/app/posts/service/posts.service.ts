@@ -8,6 +8,7 @@ import {
   PAGE_SIZE,
   SORT_BY,
 } from 'src/app/shared/utils/pagination.util';
+import { Post } from '../model/post.model';
 import { PostsResponse } from '../model/posts.response';
 import { POSTS_GET_URL } from '../util/posts-url.util';
 import { PostSortType, POST_INITIAL_SORT_TYPE } from '../util/posts.util';
@@ -31,5 +32,9 @@ export class PostsService {
     queryParams.set(ASC, `${asc}`);
 
     return this.http.get<PostsResponse>(POSTS_GET_URL, { params: queryParams });
+  }
+
+  getPostById(postId: number): Observable<Post> {
+    return this.http.get<Post>(`${POSTS_GET_URL}/${postId}`);
   }
 }

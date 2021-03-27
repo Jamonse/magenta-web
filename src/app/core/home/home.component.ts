@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RoutingService } from 'src/app/shared/route/routing.service';
+import { RoutingService } from 'src/app/shared/router/routing.service';
 import { POST_WRITE } from '../../auth/util/permission.util';
 
 @Component({

@@ -1,20 +1,26 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { map, switchMap, take, tap } from 'rxjs/operators';
+import { SharedFacade } from 'src/app/shared/state/shared.facade';
 import {
   INITIAL_ASC,
   INITIAL_PAGE_INDEX,
   INITIAL_PAGE_SIZE,
 } from 'src/app/shared/utils/pagination.util';
+import { Post } from '../model/post.model';
 import { PostsResponse } from '../model/posts.response';
 import { PostSortType, POST_INITIAL_SORT_TYPE } from '../util/posts.util';
-import { loadPosts } from './post.action';
+import { loadPost, loadPosts, loadPostSuccess } from './post.action';
 import { PostState } from './post.state';
-import { getPostsPage } from './posts.selector';
+import { getPostById, getPostsPage } from './posts.selector';
 
 @Injectable({ providedIn: 'root' })
 export class PostsFacade {
-  constructor(private store: Store<PostState>) {}
+  constructor(
+    private store: Store<PostState>,
+    private sharedFacade: SharedFacade
+  ) {}
 
   loadPosts(
     pageIndex: number = INITIAL_PAGE_INDEX,
@@ -34,5 +40,9 @@ export class PostsFacade {
 
   getPostsPage(): Observable<PostsResponse | null> {
     return this.store.select(getPostsPage);
+  }
+
+  getPostById(): Observable<Post | null> {
+    return this.store.select(getPostById);
   }
 }

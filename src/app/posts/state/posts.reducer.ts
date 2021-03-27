@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { loadPostsSuccess } from './post.action';
+import { loadPostsSuccess, loadPostSuccess } from './post.action';
 import { initialState, PostState } from './post.state';
 import { PostsResponse } from '../model/posts.response';
 
@@ -17,7 +17,10 @@ const _postsReducer = createReducer(
         pageSize: postsPageData.pageSize,
       };
     }
-  )
+  ),
+  on(loadPostSuccess, (state: PostState, action: any) => {
+    return { ...state, loadedPost: action.post };
+  })
 );
 
 export function PostsReducer(state: PostState, action: any): PostState {

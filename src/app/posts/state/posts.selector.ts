@@ -15,3 +15,7 @@ export const getPostsPage = createSelector(getPostsState, (state) => {
       } as PostsResponse)
     : null;
 });
+
+export const getPostById = createSelector(getPostsState, (state) => {
+  return state.loadedPost;
+});

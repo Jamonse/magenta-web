@@ -13,6 +13,8 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from 'src/environments/environment';
 import { AuthEffects } from './auth/state/auth.effect';
 import { TokenInterceptor } from './auth/interceptor/token.interceptor';
+import { StoreRouterConnectingModule } from '@ngrx/router-store';
+import { RouterSerializer } from './shared/router/router.serializer';
 
 @NgModule({
   declarations: [AppComponent],
@@ -27,6 +29,7 @@ import { TokenInterceptor } from './auth/interceptor/token.interceptor';
     StoreDevtoolsModule.instrument({
       logOnly: environment.production,
     }),
+    StoreRouterConnectingModule.forRoot({ serializer: RouterSerializer }),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
