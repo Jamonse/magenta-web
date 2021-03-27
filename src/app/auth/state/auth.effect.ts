@@ -89,12 +89,12 @@ export class AuthEffects {
         this.sharedFacade.displayGeneralLoading();
         return this.authService.refreshToken(action.refreshToken).pipe(
           map((newJwt) => {
-            console.log(newJwt);
             // Uppon successfull new jwt request, update local storage and return refresh success action
             this.authService.updateLocalStorageJwt(newJwt);
             return refreshSuccess({ jwt: newJwt });
           }),
           catchError((err) => {
+            console.log(err);
             // Uppon failure, get error message and return refresh fail action
             const errorMessage = this.authService.getErrorMessage(
               err.error.message

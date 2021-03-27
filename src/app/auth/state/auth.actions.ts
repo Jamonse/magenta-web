@@ -11,6 +11,8 @@ export const REFRESH_REQUEST = '[login page] refresh request';
 export const REFRESH_SUCCESS = '[login page] refresh success';
 export const REFRESH_FAIL = '[login page] refresh fail';
 
+export const CLEAR_JWT = '[login page] clear jwt';
+
 export const loginRequest = createAction(
   LOGIN_REQUEST,
   props<{ email: string; password: string }>()
@@ -41,3 +43,5 @@ export const refreshFail = createAction(
   REFRESH_FAIL,
   props<{ errorMessage: string }>()
 );
+
+export const clearJwt = createAction(CLEAR_JWT);

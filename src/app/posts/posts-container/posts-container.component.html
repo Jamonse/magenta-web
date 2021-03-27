@@ -11,12 +11,18 @@
   >
   </app-search-container>
   <div
-    style="margin: 1rem"
     fxLayout="row wrap"
-    fxLayoutAlign="flex-start"
-    fxLayoutGap="1rem"
+    fxLayout.xs="column"
+    fxLayoutGap="16px grid"
+    style="padding: 1rem"
   >
-    <app-post *ngFor="let post of postsData.content" [post]="post"></app-post>
+    <app-post
+      fxFlex.sm="0 1 calc(50%-10px)"
+      fxFlex.md="0 1 calc(33%-10px)"
+      fxFlex.gt-md="0 1 calc(25%-10px)"
+      *ngFor="let post of postsData.content"
+      [post]="post"
+    ></app-post>
   </div>
   <div fxFlex="60"></div>
   <mat-paginator

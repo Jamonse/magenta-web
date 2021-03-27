@@ -6,10 +6,18 @@ import {
   HttpInterceptor,
   HttpErrorResponse,
 } from '@angular/common/http';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { AuthFacade } from '../state/auth.facade';
-import { catchError, exhaustMap, mergeMap, take } from 'rxjs/operators';
-import { refreshFail } from '../state/auth.actions';
+import {
+  catchError,
+  exhaustMap,
+  map,
+  mergeMap,
+  switchMap,
+  take,
+} from 'rxjs/operators';
+import { Actions, ofType } from '@ngrx/effects';
+import { refreshSuccess } from '../state/auth.actions';
 
 export const TOKEN_PREFIX = 'Bearer';
 export const UNABLE_TO_REFRESH =
@@ -18,12 +26,20 @@ export const INVALID_TOKEN = 'INVALID_TOKEN';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
-  constructor(private authFacade: AuthFacade) {}
+  isTokenRefreshing = false;
+  constructor(private authFacade: AuthFacade, private actions$: Actions) {}
 
   intercept(
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
+    if (
+      request.url.indexOf('refresh') !== -1 ||
+      request.url.indexOf('login') !== -1 ||
+      request.url.indexOf('logout') !== -1
+    ) {
+      return next.handle(request);
+    }
     return this.authFacade.getJwt().pipe(
       take(1),
       exhaustMap((token) => {
@@ -60,7 +76,30 @@ export class TokenInterceptor implements HttpInterceptor {
   ): Observable<any> {
     if (err.error !== INVALID_TOKEN) {
       return throwError(err); // Error is not an invalid jwt
+    } // If token not yet refreshing, start refresh process
+    if (!this.isTokenRefreshing) {
+      // Set is refreshing to true
+      this.isTokenRefreshing = true;
+      // Get refresh token from state
+      return this.authFacade.getRefreshToken().pipe(
+        take(1),
+        switchMap((refreshToken) => {
+          if (refreshToken) {
+            // Perform refresh
+            this.authFacade.refreshJwt(refreshToken);
+          } // Listen to refresh success action
+          return this.actions$.pipe(
+            ofType(refreshSuccess),
+            take(1),
+            exhaustMap((newJwt) => {
+              // Upon receiving payload, perofrm request with new JWT
+              this.isTokenRefreshing = false;
+              return next.handle(this.addToken(request, newJwt.jwt));
+            })
+          );
+        })
+      );
     }
-    return of();
+    return next.handle(request);
   }
 }

@@ -34,7 +34,7 @@ export class AuthService {
   }
 
   refreshToken(refreshToken: string): Observable<string> {
-    return this.http.post<string>(REFRESH_URL, refreshToken);
+    return this.http.post(REFRESH_URL, refreshToken, { responseType: 'text' });
   }
 
   createUserDetails(data: UserData): UserData {

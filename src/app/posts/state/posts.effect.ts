@@ -28,14 +28,15 @@ export class PostsEffect {
             action.asc
           )
           .pipe(
-            map((postsResponse) =>
-              loadPostsSuccess({ postsPageData: postsResponse })
-            ),
-            catchError((err) =>
-              of(
+            map((postsResponse) => {
+              this.sharedFacade.hideContentLoading();
+              return loadPostsSuccess({ postsPageData: postsResponse });
+            }),
+            catchError((err) => {
+              return of(
                 displayErrorMessage({ message: 'An unexpected error occurred' })
-              )
-            ),
+              );
+            }),
             finalize(() => this.sharedFacade.hideContentLoading())
           );
       })

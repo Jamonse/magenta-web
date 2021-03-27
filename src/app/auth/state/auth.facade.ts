@@ -3,9 +3,13 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { AppState } from 'src/app/state/app.state';
 import { Privilege } from '../model/privilege.model';
-import { Theme } from '../model/theme.model';
 import { User } from '../model/user.model';
-import { loginRequest, logoutAction, refreshRequest } from './auth.actions';
+import {
+  clearJwt,
+  loginRequest,
+  logoutAction,
+  refreshRequest,
+} from './auth.actions';
 import {
   getJwt,
   getPermissions,
@@ -35,6 +39,10 @@ export class AuthFacade {
 
   getRefreshToken(): Observable<string | null> {
     return this.store.select(getRefreshToken);
+  }
+
+  clearJwt(): void {
+    this.store.dispatch(clearJwt());
   }
 
   getUser(): Observable<User | null> {

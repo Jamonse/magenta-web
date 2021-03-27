@@ -1,17 +1,32 @@
 import { createReducer, on } from '@ngrx/store';
-import { loginSuccess, logoutAction, refreshSuccess } from './auth.actions';
+import { UserData } from '../model/user-data.model';
+import {
+  clearJwt,
+  loginSuccess,
+  logoutAction,
+  refreshSuccess,
+} from './auth.actions';
 import { AuthState, initialState } from './auth.state';
 
 const _authReducer = createReducer(
   initialState,
   on(loginSuccess, (state: AuthState, action: any) => {
-    return { ...state, user: action.user };
+    const userData: UserData = action.user;
+    return {
+      ...state,
+      user: userData.user,
+      jwt: userData.jwt,
+      refreshToken: userData.refreshToken,
+    };
   }),
   on(logoutAction, (state: AuthState, action: any) => {
     return { ...state, user: null };
   }),
   on(refreshSuccess, (state: AuthState, action: any) => {
     return { ...state, jwt: action.jwt };
+  }),
+  on(clearJwt, (state: AuthState, action: any) => {
+    return { ...state, jwt: null };
   })
 );
 

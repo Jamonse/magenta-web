@@ -15,7 +15,10 @@ const _sharedReducer = createReducer(
     return { ...state, contentLoading: action.status };
   }),
   on(displayErrorMessage, (state, action) => {
-    return { ...state, errorMessage: action.message };
+    return {
+      ...state,
+      errorMessage: action.message,
+    };
   })
 );
 
