@@ -8,6 +8,7 @@ import {
   INITIAL_PAGE_SIZE,
 } from 'src/app/shared/utils/pagination.util';
 import { PostsResponse } from '../model/posts.response';
+import { PostsRoutingService } from '../service/posts-routing.service';
 import { PostsFacade } from '../state/posts.facade';
 import { PostSortInterface } from '../util/post-sort.map';
 import { PostSortType, POST_SORT_TYPES } from '../util/posts.util';
@@ -17,7 +18,10 @@ import { PostSortType, POST_SORT_TYPES } from '../util/posts.util';
   styleUrls: ['./posts-container.component.scss'],
 })
 export class PostsContainerComponent implements OnInit {
-  constructor(private postsFacade: PostsFacade) {}
+  constructor(
+    private postsFacade: PostsFacade,
+    private postsRoutingService: PostsRoutingService
+  ) {}
   postsData!: Observable<PostsResponse | null>;
   pageSizeOptions: number[] = DEFAULT_PAGE_SIZE_OPTIONS;
   sortOptions: PostSortInterface[] = POST_SORT_TYPES;
@@ -46,5 +50,17 @@ export class PostsContainerComponent implements OnInit {
       this.sortOption,
       this.sortDirection
     );
+  }
+
+  createEventClicked(): void {
+    this.postsRoutingService.navigateToPostCreatePage();
+  }
+
+  editEventClicked(postId: number): void {
+    this.postsRoutingService.nvaigateToPostEditPage(postId);
+  }
+
+  readEventClicked(postId: number): void {
+    this.postsRoutingService.navigateToPostReadPage(postId);
   }
 }

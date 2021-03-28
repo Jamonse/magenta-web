@@ -1,8 +1,4 @@
-<div
-  class="container login-container"
-  fxLayout="row"
-  fxLayoutAlign="center center"
->
+<div class="login-container" fxLayout="row" fxLayoutAlign="center center">
   <form
     (ngSubmit)="login()"
     [formGroup]="loginForm"
@@ -11,7 +7,9 @@
     fxFlex.xs="90%"
   >
     <mat-card>
-      <mat-card-title> Login </mat-card-title>
+      <mat-card-title>
+        <h1 style="font-weight: bold">Login</h1>
+      </mat-card-title>
       <mat-card-content>
         <mat-form-field class="full-width">
           <mat-label> E-mail </mat-label>

@@ -1,0 +1,38 @@
+<form
+  (ngSubmit)="onFormSubmit()"
+  style="height: 80vh"
+  fxLayout="row"
+  fxLayoutAlign="center center"
+  [formGroup]="postForm"
+>
+  <mat-card fxFlex="90" fxFlex.gt-lg="50">
+    <mat-card-header style="margin-bottom: 2rem">
+      <mat-card-title> Create new post </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div fxLayout="row" fxLayoutAlign="center center">
+        <mat-form-field style="margin-bottom: 2rem" fxFlex="50">
+          <mat-label>Title</mat-label>
+          <input formControlName="title" matInput />
+          <mat-error *ngIf="postForm.controls['title'].hasError('required')">
+            Title is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="center center">
+        <angular-editor
+          fxFlex.lt-lg="90"
+          [config]="editorConfig"
+          formControlName="content"
+        >
+        </angular-editor>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-flat-button type="submit" color="primary">
+        {{ actionButtonLabel }}
+      </button>
+      <button (click)="onBack()" mat-stroked-button type="button">Back</button>
+    </mat-card-actions>
+  </mat-card>
+</form>

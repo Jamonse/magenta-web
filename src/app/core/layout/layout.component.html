@@ -52,7 +52,7 @@
       [mode]="(mobileQuery | async) ? 'over' : 'side'"
       [fixedInViewport]="mobileQuery | async"
     >
-      <app-nav-options></app-nav-options>
+      <app-nav-options (navOptionEvent)="navOptionClicked()"></app-nav-options>
     </mat-sidenav>
     <!-- Content -->
     <mat-sidenav-content class="sidenav-content">

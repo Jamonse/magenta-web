@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { RouterNavigatedAction, ROUTER_NAVIGATION } from '@ngrx/router-store';
-import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import {
   catchError,
@@ -10,13 +9,13 @@ import {
   map,
   mergeMap,
   switchMap,
+  withLatestFrom,
 } from 'rxjs/operators';
 import { displayErrorMessage } from 'src/app/shared/state/shared.actions';
 import { SharedFacade } from 'src/app/shared/state/shared.facade';
-import { Post } from '../model/post.model';
 import { PostsService } from '../service/posts.service';
 import { loadPosts, loadPostsSuccess, loadPostSuccess } from './post.action';
-import { PostState } from './post.state';
+import { PostsFacade } from './posts.facade';
 
 @Injectable()
 export class PostsEffect {
@@ -24,7 +23,7 @@ export class PostsEffect {
     private action$: Actions,
     private postsService: PostsService,
     private sharedFacade: SharedFacade,
-    private store: Store<PostState>
+    private facade: PostsFacade
   ) {}
 
   loadPosts$ = createEffect(() =>
@@ -57,14 +56,26 @@ export class PostsEffect {
 
   loadPost$ = createEffect(() => {
     return this.action$.pipe(
-      ofType(ROUTER_NAVIGATION),
-      filter((route: RouterNavigatedAction) =>
-        route.payload.routerState.url.startsWith('/posts')
-      ),
-      map((route: RouterNavigatedAction) => route.payload.routerState['root']),
-      switchMap((postId) => {
+      ofType(ROUTER_NAVIGATION), // Listen for router navigation action to posts url
+      filter((route: RouterNavigatedAction) => {
+        const url = route.payload.routerState.url;
+        return (
+          url.startsWith('/posts/edit') || url.startsWith('/posts/details')
+        );
+      }), // Get id from url prarms
+      map((route: any) => route.payload.routerState['params']['id']),
+      withLatestFrom(this.facade.getPostsPage()), // Get current loaded posts from state
+      switchMap(([postId, posts]) => {
+        if (posts) {
+          // Search if requested post already exists in state
+          const post = posts.content.find((post) => post.id === postId);
+          if (post) {
+            // Return the post if found
+            return of(loadPostSuccess({ post: post }));
+          }
+        } // Otherwise perform an API call to get the post
         return this.postsService
-          .getPostById(1)
+          .getPostById(postId)
           .pipe(map((post) => loadPostSuccess({ post: post })));
       })
     );

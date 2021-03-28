@@ -6,6 +6,7 @@
       [routerLink]="navOption.navTo"
       routerLinkActive="active"
       style="font-weight: bold"
+      (click)="navOptionClicked()"
     >
       <mat-icon class="menu-option-icon" [svgIcon]="navOption.icon"></mat-icon>
       {{ navOption.name }}

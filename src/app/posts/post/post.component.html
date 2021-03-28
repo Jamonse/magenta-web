@@ -6,6 +6,10 @@
     <mat-card-subtitle>
       {{ post.createdAt | date }}
     </mat-card-subtitle>
+    <div fxFlex></div>
+    <button mat-icon-button>
+      <mat-icon>delete</mat-icon>
+    </button>
   </mat-card-header>
 
   <img mat-card-image [src]="post.image" />
@@ -13,6 +17,7 @@
     <p>{{ post.content }}</p>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-button>Edit</button>
+    <button (click)="editClick()" mat-flat-button color="primary">Edit</button>
+    <button (click)="readClick()" mat-stroked-button>Read</button>
   </mat-card-actions>
 </mat-card>

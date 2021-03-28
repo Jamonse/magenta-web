@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Privilege } from 'src/app/auth/model/privilege.model';
 import {
   ACCOUNT_MANAGE,
@@ -13,7 +13,9 @@ import { NavOption } from '../model/nav-option.model';
   templateUrl: './nav-options.component.html',
   styleUrls: ['./nav-options.component.scss'],
 })
-export class NavOptionsComponent implements OnInit {
+export class NavOptionsComponent {
+  @Output() navOptionEvent: EventEmitter<any> = new EventEmitter();
+
   navOptions: NavOption[] = [
     {
       icon: 'home',
@@ -49,5 +51,7 @@ export class NavOptionsComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit(): void {}
+  navOptionClicked(): void {
+    this.navOptionEvent.emit();
+  }
 }

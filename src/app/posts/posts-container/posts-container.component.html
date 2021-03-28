@@ -8,6 +8,7 @@
     [editButtonIcon]="'add'"
     [sortOptions]="sortOptions"
     (sortEvent)="sortEvent($event)"
+    (editEvent)="createEventClicked()"
   >
   </app-search-container>
   <div
@@ -17,11 +18,13 @@
     style="padding: 1rem"
   >
     <app-post
-      fxFlex.sm="0 1 calc(50%-10px)"
-      fxFlex.md="0 1 calc(33%-10px)"
-      fxFlex.gt-md="0 1 calc(25%-10px)"
+      fxFlex.sm="1 1 calc(50%-10px)"
+      fxFlex.md="1 1 calc(33%-10px)"
+      fxFlex.gt-md="1 1 calc(25%-10px)"
       *ngFor="let post of postsData.content"
       [post]="post"
+      (editEvent)="editEventClicked($event)"
+      (readEvent)="readEventClicked($event)"
     ></app-post>
   </div>
   <div fxFlex="60"></div>

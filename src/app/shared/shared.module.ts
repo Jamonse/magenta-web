@@ -10,6 +10,7 @@ import { HasPermissionDirective } from './directive/has-permission.directive';
 import { GeneralLoadingComponent } from './loading/general-loading/general-loading.component';
 import { ContentLoadingComponent } from './loading/content-loading/content-loading.component';
 import { SearchContainerComponent } from './search-container/search-container.component';
+import { ToolTipDirective } from './directive/tool-tip.directive';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { SearchContainerComponent } from './search-container/search-container.co
     GeneralLoadingComponent,
     ContentLoadingComponent,
     SearchContainerComponent,
+    ToolTipDirective,
   ],
   imports: [CommonModule, MaterialModule, FormsModule, ReactiveFormsModule],
   exports: [
@@ -35,6 +37,7 @@ import { SearchContainerComponent } from './search-container/search-container.co
     GeneralLoadingComponent,
     ContentLoadingComponent,
     SearchContainerComponent,
+    ToolTipDirective,
   ],
 })
 export class SharedModule {}

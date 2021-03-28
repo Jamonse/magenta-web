@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PostDataComponent } from './post-data/post-data.component';
+import { PostFormComponent } from './post-form/post-form.component';
 import { PostsContainerComponent } from './posts-container/posts-container.component';
 
 const routes: Routes = [
@@ -8,7 +9,9 @@ const routes: Routes = [
     path: '',
     children: [
       { path: '', component: PostsContainerComponent },
-      { path: ':id', component: PostDataComponent },
+      { path: 'create', component: PostFormComponent },
+      { path: 'details/:id', component: PostDataComponent },
+      { path: 'edit/:id', component: PostFormComponent },
     ],
   },
 ];

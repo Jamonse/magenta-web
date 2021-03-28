@@ -10,8 +10,9 @@ import {
 } from 'src/app/shared/utils/pagination.util';
 import { Post } from '../model/post.model';
 import { PostsResponse } from '../model/posts.response';
+import { PostsRoutingService } from '../service/posts-routing.service';
 import { PostSortType, POST_INITIAL_SORT_TYPE } from '../util/posts.util';
-import { loadPost, loadPosts, loadPostSuccess } from './post.action';
+import { loadPosts } from './post.action';
 import { PostState } from './post.state';
 import { getPostById, getPostsPage } from './posts.selector';
 
@@ -19,7 +20,7 @@ import { getPostById, getPostsPage } from './posts.selector';
 export class PostsFacade {
   constructor(
     private store: Store<PostState>,
-    private sharedFacade: SharedFacade
+    private postsRoutingService: PostsRoutingService
   ) {}
 
   loadPosts(
@@ -44,5 +45,13 @@ export class PostsFacade {
 
   getPostById(): Observable<Post | null> {
     return this.store.select(getPostById);
+  }
+
+  isFormUpdateMode(): boolean {
+    return this.postsRoutingService.isUpdateForm();
+  }
+
+  navigateToBackPage(): void {
+    this.postsRoutingService.backPage();
   }
 }
