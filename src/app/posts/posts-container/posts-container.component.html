@@ -11,12 +11,7 @@
     (editEvent)="createEventClicked()"
   >
   </app-search-container>
-  <div
-    fxLayout="row wrap"
-    fxLayout.xs="column"
-    fxLayoutGap="16px grid"
-    style="padding: 1rem"
-  >
+  <div fxLayout="row wrap" fxLayout.xs="column" style="padding: 1rem">
     <app-post
       fxFlex.sm="1 1 calc(50%-10px)"
       fxFlex.md="1 1 calc(33%-10px)"
@@ -25,6 +20,7 @@
       [post]="post"
       (editEvent)="editEventClicked($event)"
       (readEvent)="readEventClicked($event)"
+      (deleteEvent)="deleteEventClicked($event)"
     ></app-post>
   </div>
   <div fxFlex="60"></div>

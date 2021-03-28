@@ -10,6 +10,7 @@ export class PostComponent implements OnInit {
   @Input() post!: Post;
   @Output() editEvent: EventEmitter<number> = new EventEmitter();
   @Output() readEvent: EventEmitter<number> = new EventEmitter();
+  @Output() deleteEvent: EventEmitter<number> = new EventEmitter();
   constructor() {}
 
   ngOnInit(): void {}
@@ -20,5 +21,9 @@ export class PostComponent implements OnInit {
 
   readClick(): void {
     this.readEvent.emit(this.post.id);
+  }
+
+  deleteClick(): void {
+    this.deleteEvent.emit(this.post.id);
   }
 }

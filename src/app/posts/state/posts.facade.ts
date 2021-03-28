@@ -12,7 +12,7 @@ import { Post } from '../model/post.model';
 import { PostsResponse } from '../model/posts.response';
 import { PostsRoutingService } from '../service/posts-routing.service';
 import { PostSortType, POST_INITIAL_SORT_TYPE } from '../util/posts.util';
-import { loadPosts } from './post.action';
+import { createPost, deletePost, loadPosts, updatePost } from './post.action';
 import { PostState } from './post.state';
 import { getPostById, getPostsPage } from './posts.selector';
 
@@ -53,5 +53,19 @@ export class PostsFacade {
 
   navigateToBackPage(): void {
     this.postsRoutingService.backPage();
+  }
+
+  createPost(post: Post): void {
+    this.store.dispatch(createPost({ post: post }));
+    this.navigateToBackPage();
+  }
+
+  updatePost(post: Post): void {
+    this.store.dispatch(updatePost({ post: post }));
+    this.navigateToBackPage();
+  }
+
+  deletePost(postId: number): void {
+    this.store.dispatch(deletePost({ postId: postId }));
   }
 }

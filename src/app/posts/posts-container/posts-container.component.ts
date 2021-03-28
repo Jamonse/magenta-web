@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { Observable } from 'rxjs';
-import { SortEvent } from 'src/app/shared/events/sort.event';
+import { SortEvent } from 'src/app/shared/dialog/service/events/sort.event';
 import {
   DEFAULT_PAGE_SIZE_OPTIONS,
   INITIAL_PAGE_INDEX,
@@ -62,5 +62,9 @@ export class PostsContainerComponent implements OnInit {
 
   readEventClicked(postId: number): void {
     this.postsRoutingService.navigateToPostReadPage(postId);
+  }
+
+  deleteEventClicked(postId: number): void {
+    this.postsFacade.deletePost(postId);
   }
 }

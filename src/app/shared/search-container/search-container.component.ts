@@ -10,7 +10,7 @@ import { Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { Permission } from 'src/app/auth/model/permission.model';
 import { NONE } from 'src/app/auth/util/permission.util';
-import { SortEvent } from '../events/sort.event';
+import { SortEvent } from '../dialog/service/events/sort.event';
 import { SortInterface } from '../utils/sort.interface';
 
 @Component({

@@ -15,6 +15,7 @@ export class PostFormComponent implements OnInit, OnDestroy {
   postForm: FormGroup;
   isUpdate: boolean = false;
   actionButtonLabel: string = 'Post';
+  postFormTitle: string = 'Create new post';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -27,7 +28,18 @@ export class PostFormComponent implements OnInit, OnDestroy {
   }
 
   onFormSubmit(): void {
-    console.log(this.postForm.controls['content'].value);
+    if (!this.postForm.valid) {
+      return;
+    }
+    if (this.post) {
+      const post = {
+        ...this.post,
+        ...this.postForm.value,
+      };
+      this.postsFacade.updatePost(post);
+    } else {
+      this.postsFacade.createPost(this.postForm.value);
+    }
   }
 
   onBack(): void {
@@ -43,6 +55,7 @@ export class PostFormComponent implements OnInit, OnDestroy {
         .subscribe((post) => {
           if (post) {
             this.post = post;
+            this.postFormTitle = `Update ${post.title}`;
             this.postForm.patchValue({
               title: post.title,
               content: post.content,

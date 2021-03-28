@@ -1,4 +1,4 @@
-<mat-card *ngIf="post">
+<mat-card *ngIf="post" style="margin: 0.5rem">
   <mat-card-header>
     <mat-card-title>
       {{ post.title }}
@@ -7,7 +7,7 @@
       {{ post.createdAt | date }}
     </mat-card-subtitle>
     <div fxFlex></div>
-    <button mat-icon-button>
+    <button (click)="deleteClick()" mat-icon-button>
       <mat-icon>delete</mat-icon>
     </button>
   </mat-card-header>

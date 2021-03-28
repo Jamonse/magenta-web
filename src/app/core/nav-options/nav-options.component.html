@@ -1,7 +1,14 @@
-<mat-nav-list>
-  <span *ngFor="let navOption of navOptions">
-    <a
-      mat-list-item
+<mat-nav-list
+  style="height: 100%"
+  fxLayout="column"
+  fxLayoutAlign="space-around stretch"
+>
+  <span
+    fxLayout="row"
+    fxLayoutAlign="space-around stretch"
+    *ngFor="let navOption of navOptions"
+  >
+    <mat-list-item
       *hasPermission="navOption.requiredPermission"
       [routerLink]="navOption.navTo"
       routerLinkActive="active"
@@ -11,6 +18,6 @@
       <mat-icon class="menu-option-icon" [svgIcon]="navOption.icon"></mat-icon>
       {{ navOption.name }}
       <mat-divider></mat-divider>
-    </a>
+    </mat-list-item>
   </span>
 </mat-nav-list>

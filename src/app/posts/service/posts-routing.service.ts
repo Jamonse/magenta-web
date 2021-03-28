@@ -19,6 +19,10 @@ export class PostsRoutingService {
     this.router.navigate(['posts/create']);
   }
 
+  navigateToPostsPage(): void {
+    this.router.navigate(['posts']);
+  }
+
   isUpdateForm(): boolean {
     return this.router.url.indexOf('edit') !== -1;
   }

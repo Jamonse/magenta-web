@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { RouterNavigatedAction, ROUTER_NAVIGATION } from '@ngrx/router-store';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import {
   catchError,
   filter,
@@ -14,7 +14,13 @@ import {
 import { displayErrorMessage } from 'src/app/shared/state/shared.actions';
 import { SharedFacade } from 'src/app/shared/state/shared.facade';
 import { PostsService } from '../service/posts.service';
-import { loadPosts, loadPostsSuccess, loadPostSuccess } from './post.action';
+import {
+  createPost,
+  createPostSuccess,
+  loadPosts,
+  loadPostsSuccess,
+  loadPostSuccess,
+} from './post.action';
 import { PostsFacade } from './posts.facade';
 
 @Injectable()
@@ -30,8 +36,8 @@ export class PostsEffect {
     this.action$.pipe(
       ofType(loadPosts),
       mergeMap((action) => {
-        this.sharedFacade.displayContentLoading();
-        return this.postsService
+        this.sharedFacade.displayContentLoading(); // Dispaly content loading
+        return this.postsService // Load posts with page detail from action
           .getPostsPage(
             action.pageIndex,
             action.pageSize,
@@ -39,15 +45,13 @@ export class PostsEffect {
             action.asc
           )
           .pipe(
+            // Upon successfull response, return action with received content
             map((postsResponse) => {
               this.sharedFacade.hideContentLoading();
               return loadPostsSuccess({ postsPageData: postsResponse });
-            }),
-            catchError((err) => {
-              return of(
-                displayErrorMessage({ message: 'An unexpected error occurred' })
-              );
-            }),
+            }), // Handle failure message display in case of error in response
+            catchError((err) => this.handleError),
+            // Hide content loading upon completion
             finalize(() => this.sharedFacade.hideContentLoading())
           );
       })
@@ -68,16 +72,34 @@ export class PostsEffect {
       switchMap(([postId, posts]) => {
         if (posts) {
           // Search if requested post already exists in state
-          const post = posts.content.find((post) => post.id === postId);
+          const post = posts.content.find((post) => post.id == postId);
           if (post) {
             // Return the post if found
             return of(loadPostSuccess({ post: post }));
           }
         } // Otherwise perform an API call to get the post
-        return this.postsService
-          .getPostById(postId)
-          .pipe(map((post) => loadPostSuccess({ post: post })));
+        return this.postsService.getPostById(postId).pipe(
+          map((post) => loadPostSuccess({ post: post })),
+          catchError((err) => this.handleError)
+        );
       })
     );
   });
+
+  createPost$ = createEffect(() => {
+    return this.action$.pipe(
+      ofType(createPost),
+      mergeMap((action) => {
+        return this.postsService.createPost(action.post).pipe(
+          map((post) => createPostSuccess({ post: post })),
+          catchError((err) => this.handleError)
+        );
+      })
+    );
+  });
+
+  private handleError(err: any): Observable<any> {
+    const errorMessage = this.postsService.getErrorMessage(err.error.message);
+    return of(displayErrorMessage({ message: errorMessage }));
+  }
 }
