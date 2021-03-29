@@ -1,7 +1,9 @@
 <mat-card *ngIf="post" style="margin: 0.5rem">
   <mat-card-header>
     <mat-card-title>
-      {{ post.title }}
+      <span class="ellipsis">
+        {{ post.title }}
+      </span>
     </mat-card-title>
     <mat-card-subtitle>
       {{ post.createdAt | date }}
@@ -12,9 +14,9 @@
     </button>
   </mat-card-header>
 
-  <img mat-card-image [src]="post.image" />
+  <img mat-card-image [src]="post.image ? post.image : defaultPicUrl" />
   <mat-card-content>
-    <p>{{ post.content }}</p>
+    <p [innerHTML]="post.content | sanitizingSafe"></p>
   </mat-card-content>
   <mat-card-actions>
     <button (click)="editClick()" mat-flat-button color="primary">Edit</button>

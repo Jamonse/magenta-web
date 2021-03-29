@@ -17,9 +17,13 @@ import { PostsService } from '../service/posts.service';
 import {
   createPost,
   createPostSuccess,
+  deletePost,
+  deletePostSuccess,
   loadPosts,
   loadPostsSuccess,
   loadPostSuccess,
+  updatePost,
+  updatePostSuccess,
 } from './post.action';
 import { PostsFacade } from './posts.facade';
 
@@ -92,6 +96,30 @@ export class PostsEffect {
       mergeMap((action) => {
         return this.postsService.createPost(action.post).pipe(
           map((post) => createPostSuccess({ post: post })),
+          catchError((err) => this.handleError)
+        );
+      })
+    );
+  });
+
+  updatePost$ = createEffect(() => {
+    return this.action$.pipe(
+      ofType(updatePost),
+      switchMap((action) => {
+        return this.postsService.updatePost(action.post).pipe(
+          map((post) => updatePostSuccess({ post: post })),
+          catchError((err) => this.handleError)
+        );
+      })
+    );
+  });
+
+  deletePost$ = createEffect(() => {
+    return this.action$.pipe(
+      ofType(deletePost),
+      mergeMap((action) => {
+        return this.postsService.deletePost(action.postId).pipe(
+          map(() => deletePostSuccess()),
           catchError((err) => this.handleError)
         );
       })

@@ -1,7 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { map, switchMap, take, tap } from 'rxjs/operators';
+import { GenerealDialogDefinition } from 'src/app/shared/dialog/model/general-dialog.definition';
+import { GeneralDialogType } from 'src/app/shared/dialog/model/general-dialog.type';
+import { MatDialogData } from 'src/app/shared/dialog/model/mat-dialog.data';
+import { DialogService } from 'src/app/shared/dialog/service/dialog.service';
 import { SharedFacade } from 'src/app/shared/state/shared.facade';
 import {
   INITIAL_ASC,
@@ -17,9 +21,11 @@ import { PostState } from './post.state';
 import { getPostById, getPostsPage } from './posts.selector';
 
 @Injectable({ providedIn: 'root' })
-export class PostsFacade {
+export class PostsFacade implements OnDestroy {
+  dialogSubscription!: Subscription;
   constructor(
     private store: Store<PostState>,
+    private dialogService: DialogService,
     private postsRoutingService: PostsRoutingService
   ) {}
 
@@ -66,6 +72,26 @@ export class PostsFacade {
   }
 
   deletePost(postId: number): void {
-    this.store.dispatch(deletePost({ postId: postId }));
+    const dialogData: MatDialogData = {
+      data: {
+        dialogType: GeneralDialogType.WARNING,
+        dialogDefinition: GenerealDialogDefinition.CONFIRMATION,
+        dialogMessage: 'Are you sure?',
+      },
+      panelClass: 'dialog',
+    };
+    this.dialogSubscription = this.dialogService
+      .openDialog(dialogData)
+      .subscribe((value) => {
+        if (value) {
+          this.store.dispatch(deletePost({ postId: postId }));
+        }
+      });
+  }
+
+  ngOnDestroy(): void {
+    if (this.dialogSubscription) {
+      this.dialogSubscription.unsubscribe();
+    }
   }
 }

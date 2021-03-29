@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { GeneralDialogData } from '../model/general-dialog.data';
+import { GenerealDialogDefinition } from '../model/general-dialog.definition';
 
 @Component({
   templateUrl: './general-dialog.component.html',
@@ -8,6 +9,7 @@ import { GeneralDialogData } from '../model/general-dialog.data';
 })
 export class GeneralDialogComponent implements OnInit {
   dialogData: GeneralDialogData;
+  dialogDefinition = GenerealDialogDefinition;
   dialogIcon: string;
   constructor(
     private dialogRef: MatDialogRef<GeneralDialogComponent>,
@@ -19,7 +21,7 @@ export class GeneralDialogComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  closeDialog(): void {
-    this.dialogRef.close();
+  closeDialog(confirm: boolean = false): void {
+    this.dialogRef.close(confirm);
   }
 }

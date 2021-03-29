@@ -11,6 +11,7 @@ export class PostComponent implements OnInit {
   @Output() editEvent: EventEmitter<number> = new EventEmitter();
   @Output() readEvent: EventEmitter<number> = new EventEmitter();
   @Output() deleteEvent: EventEmitter<number> = new EventEmitter();
+  defaultPicUrl: string = 'assets/card-pic.jpg';
   constructor() {}
 
   ngOnInit(): void {}

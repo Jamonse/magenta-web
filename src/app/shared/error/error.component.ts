@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
+import { GenerealDialogDefinition } from '../dialog/model/general-dialog.definition';
 import { GeneralDialogType } from '../dialog/model/general-dialog.type';
 import { MatDialogData } from '../dialog/model/mat-dialog.data';
 import { DialogService } from '../dialog/service/dialog.service';
@@ -20,6 +21,7 @@ export class ErrorComponent implements OnInit, OnDestroy {
     this.dialogData = {
       data: {
         dialogType: GeneralDialogType.ERROR,
+        dialogDefinition: GenerealDialogDefinition.OK,
         dialogMessage: '',
       },
       panelClass: 'dialog',

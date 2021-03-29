@@ -1,18 +1,10 @@
-<mat-nav-list
-  style="height: 100%"
-  fxLayout="column"
-  fxLayoutAlign="space-around stretch"
->
-  <span
-    fxLayout="row"
-    fxLayoutAlign="space-around stretch"
-    *ngFor="let navOption of navOptions"
-  >
+<mat-nav-list fxLayout="column" fxLayoutAlign="space-around stretch">
+  <span *ngFor="let navOption of navOptions">
     <mat-list-item
       *hasPermission="navOption.requiredPermission"
       [routerLink]="navOption.navTo"
       routerLinkActive="active"
-      style="font-weight: bold"
+      style="font-weight: bold; height: 5rem"
       (click)="navOptionClicked()"
     >
       <mat-icon class="menu-option-icon" [svgIcon]="navOption.icon"></mat-icon>

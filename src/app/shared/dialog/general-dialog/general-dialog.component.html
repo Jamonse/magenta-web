@@ -3,10 +3,32 @@
   fxLayoutAlign="space-around center"
   class="container dialog-container"
   fxLayoutGap="2rem"
+  [ngSwitch]="dialogData.dialogDefinition"
 >
   <mat-icon color="warn">{{ dialogIcon }}</mat-icon>
   <div>{{ dialogData.dialogMessage }}</div>
-  <button fxFlexAlign="stretch" (click)="closeDialog()" mat-flat-button>
+  <button
+    *ngSwitchCase="dialogDefinition.OK"
+    fxFlexAlign="stretch"
+    (click)="closeDialog()"
+    mat-flat-button
+  >
     OK
   </button>
+  <div
+    fxLayout="column"
+    style="width: 100%"
+    *ngSwitchCase="dialogDefinition.CONFIRMATION"
+  >
+    <button
+      style="margin-bottom: 1rem"
+      (click)="closeDialog(true)"
+      mat-flat-button
+      color="warn"
+    >
+      Yes
+    </button>
+
+    <button (click)="closeDialog()" mat-stroked-button>No</button>
+  </div>
 </div>

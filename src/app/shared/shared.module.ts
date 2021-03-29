@@ -11,6 +11,7 @@ import { GeneralLoadingComponent } from './loading/general-loading/general-loadi
 import { ContentLoadingComponent } from './loading/content-loading/content-loading.component';
 import { SearchContainerComponent } from './search-container/search-container.component';
 import { ToolTipDirective } from './directive/tool-tip.directive';
+import { SanitizingSafePipe } from './pipe/sanitizing-safe.pipe';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { ToolTipDirective } from './directive/tool-tip.directive';
     ContentLoadingComponent,
     SearchContainerComponent,
     ToolTipDirective,
+    SanitizingSafePipe,
   ],
   imports: [CommonModule, MaterialModule, FormsModule, ReactiveFormsModule],
   exports: [
@@ -38,6 +40,7 @@ import { ToolTipDirective } from './directive/tool-tip.directive';
     ContentLoadingComponent,
     SearchContainerComponent,
     ToolTipDirective,
+    SanitizingSafePipe,
   ],
 })
 export class SharedModule {}
