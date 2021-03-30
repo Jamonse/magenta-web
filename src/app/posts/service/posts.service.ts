@@ -6,15 +6,19 @@ import {
   INITIAL_ASC,
   PAGE_INDEX,
   PAGE_SIZE,
+  RESULTS_COUNT,
   SORT_BY,
+  TEXT_EXAMPLE,
 } from 'src/app/shared/utils/pagination.util';
 import { Post } from '../model/post.model';
+import { PostSearchResult } from '../model/post.search-result';
 import { PostsResponse } from '../model/posts.response';
 import {
   POSTS_GET_URL,
   POSTS_CREATE_URL,
   POSTS_UPDATE_URL,
   POSTS_DELETE_URL,
+  POSTS_SEARCH_URL,
 } from '../util/posts-url.util';
 import { PostSortType, POST_INITIAL_SORT_TYPE } from '../util/posts.util';
 
@@ -40,6 +44,19 @@ export class PostsService {
 
   getPostById(postId: number): Observable<Post> {
     return this.http.get<Post>(`${POSTS_GET_URL}/${postId}`);
+  }
+
+  searchPosts(
+    text: string,
+    resultsCount?: number
+  ): Observable<PostSearchResult[]> {
+    const queryParams: HttpParams = new HttpParams().set(TEXT_EXAMPLE, text);
+    if (resultsCount) {
+      queryParams.set(RESULTS_COUNT, `${resultsCount}`);
+    }
+    return this.http.get<PostSearchResult[]>(POSTS_SEARCH_URL, {
+      params: queryParams,
+    });
   }
 
   createPost(post: Post): Observable<Post> {

@@ -16,19 +16,21 @@
     OK
   </button>
   <div
-    fxLayout="column"
+    fxLayout.xs="column"
+    fxLayout="row"
     style="width: 100%"
     *ngSwitchCase="dialogDefinition.CONFIRMATION"
   >
+    <button style="margin: 1rem" (click)="closeDialog()" mat-stroked-button>
+      No
+    </button>
     <button
-      style="margin-bottom: 1rem"
+      style="margin: 1rem"
       (click)="closeDialog(true)"
       mat-flat-button
       color="warn"
     >
       Yes
     </button>
-
-    <button (click)="closeDialog()" mat-stroked-button>No</button>
   </div>
 </div>

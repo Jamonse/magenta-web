@@ -1,5 +1,9 @@
 import { createReducer, on } from '@ngrx/store';
-import { loadPostsSuccess, loadPostSuccess } from './post.action';
+import {
+  loadPostsSuccess,
+  loadPostSuccess,
+  searchPostsSuccess,
+} from './post.action';
 import { initialState, PostState } from './post.state';
 import { PostsResponse } from '../model/posts.response';
 
@@ -20,6 +24,9 @@ const _postsReducer = createReducer(
   ),
   on(loadPostSuccess, (state: PostState, action: any) => {
     return { ...state, loadedPost: action.post };
+  }),
+  on(searchPostsSuccess, (state: PostState, action: any) => {
+    return { ...state, searchedPosts: action.searchResults };
   })
 );
 

@@ -1,23 +1,27 @@
-<mat-card *ngIf="post" style="margin: 0.5rem">
-  <mat-card-header>
+<mat-card *ngIf="post">
+  <mat-card-header fxLayout="row" fxLayoutAlign="space-between start">
     <mat-card-title>
-      <span class="ellipsis">
+      <h1 appToolTip [matTooltip]="post.title" class="ellipsis">
         {{ post.title }}
-      </span>
+      </h1>
+      <mat-card-subtitle>
+        {{ post.createdAt | date }}
+      </mat-card-subtitle>
     </mat-card-title>
-    <mat-card-subtitle>
-      {{ post.createdAt | date }}
-    </mat-card-subtitle>
-    <div fxFlex></div>
     <button (click)="deleteClick()" mat-icon-button>
       <mat-icon>delete</mat-icon>
     </button>
   </mat-card-header>
-
-  <img mat-card-image [src]="post.image ? post.image : defaultPicUrl" />
-  <mat-card-content>
+  <mat-divider></mat-divider>
+  <img
+    style="max-height: 20rem"
+    mat-card-image
+    [src]="post.image ? post.image : defaultPicUrl"
+  />
+  <mat-card-content class="ellipsis" style="height: 5rem">
     <p [innerHTML]="post.content | sanitizingSafe"></p>
   </mat-card-content>
+  <mat-divider></mat-divider>
   <mat-card-actions>
     <button (click)="editClick()" mat-flat-button color="primary">Edit</button>
     <button (click)="readClick()" mat-stroked-button>Read</button>

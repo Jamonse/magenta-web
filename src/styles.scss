@@ -81,7 +81,7 @@ body {
 }
 
 $breakpoints: (
-  "phone": 640px,
+  "phone": 599px,
   "tablet": 768px,
   "desktop": 1024px,
 ) !default;
@@ -96,7 +96,7 @@ $breakpoints: (
 }
 
 .dialog {
-  @media screen and (max-width: map-get($breakpoints , "tablet")) {
+  @media screen and (max-width: map-get($breakpoints , "phone")) {
     height: 90% !important;
     position: relative;
     overflow: hidden;
@@ -105,11 +105,10 @@ $breakpoints: (
     line-height: 2rem;
     text-align: center;
   }
+}
 
-  .ellipsis {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 10px;
-  }
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

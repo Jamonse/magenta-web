@@ -1,33 +1,52 @@
 <div
   *ngIf="postsData | async as postsData"
+  fxFlexFill
   fxLayout="column"
-  style="height: 100%"
+  fxLayoutAlign="space-between stretch"
+  fxLayoutGap="10px"
 >
-  <app-search-container
-    [searchLabel]="'Search post...'"
-    [editButtonIcon]="'add'"
-    [sortOptions]="sortOptions"
-    (sortEvent)="sortEvent($event)"
-    (editEvent)="createEventClicked()"
-  >
-  </app-search-container>
-  <div fxLayout="row wrap">
-    <div
-      fxFlex="33"
-      fxFlex.xs="100%"
-      fxFlex.sm="50"
-      *ngFor="let post of postsData.content"
+  <div>
+    <app-search-container
+      [searchLabel]="'Search post...'"
+      [editButtonIcon]="'add'"
+      [sortOptions]="sortOptions"
+      (sortEvent)="sortEvent($event)"
+      (editEvent)="createEventClicked()"
+      (searchTextEvent)="searchTextChanged($event)"
     >
-      <app-post
-        [post]="post"
-        (editEvent)="editEventClicked($event)"
-        (readEvent)="readEventClicked($event)"
-        (deleteEvent)="deleteEventClicked($event)"
-      ></app-post>
-    </div>
+    </app-search-container>
+    <ng-template
+      *ngIf="postsData.content.length > 0; then postsFound; else noPostsFound"
+    >
+    </ng-template>
+    <ng-template #postsFound>
+      <div fxLayout="row wrap">
+        <div
+          fxFlex="25"
+          fxFlex.md="50"
+          fxFlex.sm="50"
+          fxFlex.xs="100"
+          fxLayout="column"
+          style="padding: 5px"
+          *ngFor="let post of postsData.content"
+        >
+          <app-post
+            [post]="post"
+            (editEvent)="editEventClicked($event)"
+            (readEvent)="readEventClicked($event)"
+            (deleteEvent)="deleteEventClicked($event)"
+          ></app-post>
+        </div>
+      </div>
+    </ng-template>
+
+    <ng-template #noPostsFound>
+      <h2 fxLayoutAlign="center center">No posts yet.</h2>
+    </ng-template>
   </div>
-  <div fxFlex="60"></div>
   <mat-paginator
+    fxLayoutAlign="end center"
+    *ngIf="postsData.content.length > 0"
     [pageIndex]="postsData.pageNumber"
     [pageSize]="postsData.pageSize"
     [length]="postsData.totalElements"

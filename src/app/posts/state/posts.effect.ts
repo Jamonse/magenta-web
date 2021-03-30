@@ -9,6 +9,7 @@ import {
   map,
   mergeMap,
   switchMap,
+  tap,
   withLatestFrom,
 } from 'rxjs/operators';
 import { displayErrorMessage } from 'src/app/shared/state/shared.actions';
@@ -22,6 +23,8 @@ import {
   loadPosts,
   loadPostsSuccess,
   loadPostSuccess,
+  searchPosts,
+  searchPostsSuccess,
   updatePost,
   updatePostSuccess,
 } from './post.action';
@@ -33,7 +36,7 @@ export class PostsEffect {
     private action$: Actions,
     private postsService: PostsService,
     private sharedFacade: SharedFacade,
-    private facade: PostsFacade
+    private postsFacade: PostsFacade
   ) {}
 
   loadPosts$ = createEffect(() =>
@@ -54,7 +57,7 @@ export class PostsEffect {
               this.sharedFacade.hideContentLoading();
               return loadPostsSuccess({ postsPageData: postsResponse });
             }), // Handle failure message display in case of error in response
-            catchError((err) => this.handleError),
+            catchError((err) => this.handleError(err)),
             // Hide content loading upon completion
             finalize(() => this.sharedFacade.hideContentLoading())
           );
@@ -72,7 +75,7 @@ export class PostsEffect {
         );
       }), // Get id from url prarms
       map((route: any) => route.payload.routerState['params']['id']),
-      withLatestFrom(this.facade.getPostsPage()), // Get current loaded posts from state
+      withLatestFrom(this.postsFacade.getPostsPage()), // Get current loaded posts from state
       switchMap(([postId, posts]) => {
         if (posts) {
           // Search if requested post already exists in state
@@ -84,8 +87,24 @@ export class PostsEffect {
         } // Otherwise perform an API call to get the post
         return this.postsService.getPostById(postId).pipe(
           map((post) => loadPostSuccess({ post: post })),
-          catchError((err) => this.handleError)
+          catchError((err) => this.handleError(err))
         );
+      })
+    );
+  });
+
+  searchPosts$ = createEffect(() => {
+    return this.action$.pipe(
+      ofType(searchPosts),
+      switchMap((action) => {
+        return this.postsService
+          .searchPosts(action.text, action.resultsCount)
+          .pipe(
+            map((searchResults) =>
+              searchPostsSuccess({ searchResults: searchResults })
+            ),
+            catchError((err) => this.handleError(err))
+          );
       })
     );
   });
@@ -94,9 +113,10 @@ export class PostsEffect {
     return this.action$.pipe(
       ofType(createPost),
       mergeMap((action) => {
+        this.sharedFacade.displayContentLoading();
         return this.postsService.createPost(action.post).pipe(
           map((post) => createPostSuccess({ post: post })),
-          catchError((err) => this.handleError)
+          catchError((err) => this.handleError(err))
         );
       })
     );
@@ -106,9 +126,10 @@ export class PostsEffect {
     return this.action$.pipe(
       ofType(updatePost),
       switchMap((action) => {
+        this.sharedFacade.displayContentLoading();
         return this.postsService.updatePost(action.post).pipe(
           map((post) => updatePostSuccess({ post: post })),
-          catchError((err) => this.handleError)
+          catchError((err) => this.handleError(err))
         );
       })
     );
@@ -118,15 +139,34 @@ export class PostsEffect {
     return this.action$.pipe(
       ofType(deletePost),
       mergeMap((action) => {
+        this.sharedFacade.displayContentLoading();
         return this.postsService.deletePost(action.postId).pipe(
           map(() => deletePostSuccess()),
-          catchError((err) => this.handleError)
+          catchError((err) => this.handleError(err))
         );
       })
     );
   });
 
+  postsPageRedirect$ = createEffect(
+    () => {
+      return this.action$.pipe(
+        ofType(createPostSuccess, updatePostSuccess, deletePostSuccess),
+        tap((action) => {
+          this.sharedFacade.hideContentLoading();
+          if (action.type !== deletePostSuccess.type) {
+            this.postsFacade.navigateToBackPage();
+          } else {
+            this.postsFacade.loadPosts();
+          }
+        })
+      );
+    },
+    { dispatch: false }
+  );
+
   private handleError(err: any): Observable<any> {
+    this.sharedFacade.hideContentLoading();
     const errorMessage = this.postsService.getErrorMessage(err.error.message);
     return of(displayErrorMessage({ message: errorMessage }));
   }

@@ -7,7 +7,12 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  switchMap,
+  tap,
+} from 'rxjs/operators';
 import { Permission } from 'src/app/auth/model/permission.model';
 import { NONE } from 'src/app/auth/util/permission.util';
 import { SortEvent } from '../dialog/service/events/sort.event';
@@ -53,12 +58,13 @@ export class SearchContainerComponent implements OnDestroy {
       .pipe(
         debounceTime(300), // Wait 300ms before tranfering next change
         distinctUntilChanged(), // Wait until an actual change occurred in search text
-        switchMap((text) => `${text}`) // Subscribe only to latest change and discard older ones
-      ) // Set search text for highlight matching and emmit change event
-      .subscribe((text: string) => {
-        this.searchText = text;
-        this.searchTextChanged();
-      });
+        tap((text) => {
+          // Set search text for highlighting and perofrm search action
+          this.searchText = text;
+          this.searchTextChanged();
+        })
+      )
+      .subscribe();
   }
 
   editButtonPressed(): void {

@@ -9,6 +9,8 @@ import { PostsFacade } from '../state/posts.facade';
 })
 export class PostDataComponent implements OnInit {
   post!: Observable<Post | null>;
+  defaultPicUrl: string = 'assets/card-pic.jpg';
+
   constructor(private postsFacade: PostsFacade) {}
 
   ngOnInit(): void {

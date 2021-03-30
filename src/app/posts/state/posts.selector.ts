@@ -19,3 +19,7 @@ export const getPostsPage = createSelector(getPostsState, (state) => {
 export const getPostById = createSelector(getPostsState, (state) => {
   return state.loadedPost;
 });
+
+export const getSearchedPosts = createSelector(getPostsState, (state) => {
+  return state.searchedPosts;
+});

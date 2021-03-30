@@ -14,6 +14,7 @@ export class DialogService {
     const dialogRef = this.dialog.open(GeneralDialogComponent, {
       data: dialogData.data,
       panelClass: dialogData.panelClass,
+      autoFocus: false,
     });
     return dialogRef.afterClosed();
   }

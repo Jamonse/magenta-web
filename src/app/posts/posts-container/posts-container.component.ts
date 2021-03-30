@@ -7,6 +7,7 @@ import {
   INITIAL_PAGE_INDEX,
   INITIAL_PAGE_SIZE,
 } from 'src/app/shared/utils/pagination.util';
+import { PostSearchResult } from '../model/post.search-result';
 import { PostsResponse } from '../model/posts.response';
 import { PostsRoutingService } from '../service/posts-routing.service';
 import { PostsFacade } from '../state/posts.facade';
@@ -18,11 +19,13 @@ import { PostSortType, POST_SORT_TYPES } from '../util/posts.util';
   styleUrls: ['./posts-container.component.scss'],
 })
 export class PostsContainerComponent implements OnInit {
+  columns: number = 5;
   constructor(
     private postsFacade: PostsFacade,
     private postsRoutingService: PostsRoutingService
   ) {}
   postsData!: Observable<PostsResponse | null>;
+  searchedPosts!: Observable<PostSearchResult[]>;
   pageSizeOptions: number[] = DEFAULT_PAGE_SIZE_OPTIONS;
   sortOptions: PostSortInterface[] = POST_SORT_TYPES;
   pageIndex: number = INITIAL_PAGE_INDEX;
@@ -33,6 +36,7 @@ export class PostsContainerComponent implements OnInit {
   ngOnInit(): void {
     this.postsFacade.loadPosts();
     this.postsData = this.postsFacade.getPostsPage();
+    this.searchedPosts = this.postsFacade.getSearchedPosts();
   }
 
   pageEvent(pageEvent: PageEvent): void {
@@ -66,5 +70,9 @@ export class PostsContainerComponent implements OnInit {
 
   deleteEventClicked(postId: number): void {
     this.postsFacade.deletePost(postId);
+  }
+
+  searchTextChanged(text: string): void {
+    this.postsFacade.performSearch(text);
   }
 }

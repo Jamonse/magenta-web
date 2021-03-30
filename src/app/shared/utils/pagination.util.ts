@@ -2,6 +2,9 @@ export const PAGE_INDEX = 'pageIndex';
 export const PAGE_SIZE = 'pageSize';
 export const SORT_BY = 'sortBy';
 export const ASC = 'asc';
+export const RESULTS_COUNT = 'resultsCount';
+
+export const TEXT_EXAMPLE = 'textExample';
 
 export const INITIAL_PAGE_INDEX: number = 0;
 export const INITIAL_PAGE_SIZE: number = 10;

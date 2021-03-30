@@ -1,0 +1,14 @@
+import { Directive, ElementRef, HostListener } from '@angular/core';
+
+@Directive({
+  selector: 'button, a',
+})
+export class RemoveFocusDirective {
+  constructor(private elementRef: ElementRef) {}
+
+  @HostListener('click')
+  onClick() {
+    // Removes focus after clicking on a link or a button
+    this.elementRef.nativeElement.blur();
+  }
+}
