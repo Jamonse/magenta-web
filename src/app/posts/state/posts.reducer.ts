@@ -17,8 +17,10 @@ const _postsReducer = createReducer(
         ...state,
         posts: postsPageData.content ? postsPageData.content : [],
         totalPosts: postsPageData.totalElements,
-        pageIndex: postsPageData.pageNumber,
+        pageIndex: postsPageData.pageIndex,
         pageSize: postsPageData.pageSize,
+        sortBy: postsPageData.sortBy,
+        asc: postsPageData.sortDirection,
       };
     }
   ),

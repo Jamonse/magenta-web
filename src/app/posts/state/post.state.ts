@@ -4,11 +4,12 @@ import {
   INITIAL_PAGE_SIZE,
 } from 'src/app/shared/utils/pagination.util';
 import { Post } from '../model/post.model';
+import { PostSearchResult } from '../model/post.search-result';
 import { PostSortType, POST_INITIAL_SORT_TYPE } from '../util/posts.util';
 
 export interface PostState {
   posts: Post[];
-  searchedPosts: Post[];
+  searchedPosts: PostSearchResult[];
   totalPosts: number;
   pageIndex: number;
   pageSize: number;

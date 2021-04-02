@@ -13,6 +13,7 @@ import { SearchContainerComponent } from './search-container/search-container.co
 import { ToolTipDirective } from './directive/tool-tip.directive';
 import { SanitizingSafePipe } from './pipe/sanitizing-safe.pipe';
 import { RemoveFocusDirective } from './directive/remove-focus.directive';
+import { HighlightPipe } from './pipe/highlight.pipe';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { RemoveFocusDirective } from './directive/remove-focus.directive';
     ToolTipDirective,
     SanitizingSafePipe,
     RemoveFocusDirective,
+    HighlightPipe,
   ],
   imports: [CommonModule, MaterialModule, FormsModule, ReactiveFormsModule],
   exports: [
@@ -44,6 +46,7 @@ import { RemoveFocusDirective } from './directive/remove-focus.directive';
     ToolTipDirective,
     SanitizingSafePipe,
     RemoveFocusDirective,
+    HighlightPipe,
   ],
 })
 export class SharedModule {}

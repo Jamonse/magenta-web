@@ -11,3 +11,5 @@ export const POSTS_UPDATE_URL = POSTS_URL;
 export const POSTS_DELETE_URL = POSTS_URL;
 
 export const POSTS_SEARCH_URL = `${POSTS_URL}/search`;
+
+export const NEWSFEED_URL = `${POSTS_URL}/newsfeed/`;

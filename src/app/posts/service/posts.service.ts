@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import {
   ASC,
   INITIAL_ASC,
@@ -54,9 +55,22 @@ export class PostsService {
     if (resultsCount) {
       queryParams.set(RESULTS_COUNT, `${resultsCount}`);
     }
-    return this.http.get<PostSearchResult[]>(POSTS_SEARCH_URL, {
-      params: queryParams,
-    });
+    return this.http
+      .get<PostSearchResult[]>(POSTS_SEARCH_URL, {
+        params: queryParams,
+      })
+      .pipe(
+        map((searchResults) =>
+          searchResults.map(
+            (searchResult) =>
+              new PostSearchResult(
+                searchResult.id,
+                searchResult.title,
+                searchResult.createdAt
+              )
+          )
+        )
+      );
   }
 
   createPost(post: Post): Observable<Post> {

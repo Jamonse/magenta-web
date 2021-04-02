@@ -1,5 +1,4 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { from } from 'rxjs';
 import { PostState } from './post.state';
 import { PostsResponse } from '../model/posts.response';
 
@@ -12,6 +11,8 @@ export const getPostsPage = createSelector(getPostsState, (state) => {
     ? ({
         content: state.posts,
         totalElements: state.totalPosts,
+        sortBy: state.sortBy,
+        sortDirection: state.asc,
       } as PostsResponse)
     : null;
 });

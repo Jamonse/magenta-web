@@ -57,7 +57,7 @@ export class PostsEffect {
               this.sharedFacade.hideContentLoading();
               return loadPostsSuccess({ postsPageData: postsResponse });
             }), // Handle failure message display in case of error in response
-            catchError((err) => this.handleError(err)),
+            catchError(this.handleError),
             // Hide content loading upon completion
             finalize(() => this.sharedFacade.hideContentLoading())
           );
@@ -87,7 +87,7 @@ export class PostsEffect {
         } // Otherwise perform an API call to get the post
         return this.postsService.getPostById(postId).pipe(
           map((post) => loadPostSuccess({ post: post })),
-          catchError((err) => this.handleError(err))
+          catchError(this.handleError)
         );
       })
     );
@@ -103,7 +103,7 @@ export class PostsEffect {
             map((searchResults) =>
               searchPostsSuccess({ searchResults: searchResults })
             ),
-            catchError((err) => this.handleError(err))
+            catchError(this.handleError)
           );
       })
     );
@@ -116,7 +116,7 @@ export class PostsEffect {
         this.sharedFacade.displayContentLoading();
         return this.postsService.createPost(action.post).pipe(
           map((post) => createPostSuccess({ post: post })),
-          catchError((err) => this.handleError(err))
+          catchError(this.handleError)
         );
       })
     );
@@ -129,7 +129,7 @@ export class PostsEffect {
         this.sharedFacade.displayContentLoading();
         return this.postsService.updatePost(action.post).pipe(
           map((post) => updatePostSuccess({ post: post })),
-          catchError((err) => this.handleError(err))
+          catchError(this.handleError)
         );
       })
     );
@@ -142,7 +142,7 @@ export class PostsEffect {
         this.sharedFacade.displayContentLoading();
         return this.postsService.deletePost(action.postId).pipe(
           map(() => deletePostSuccess()),
-          catchError((err) => this.handleError(err))
+          catchError(this.handleError)
         );
       })
     );
@@ -152,12 +152,18 @@ export class PostsEffect {
     () => {
       return this.action$.pipe(
         ofType(createPostSuccess, updatePostSuccess, deletePostSuccess),
-        tap((action) => {
+        withLatestFrom(this.postsFacade.getPostsPage()),
+        tap(([action, postsPage]) => {
           this.sharedFacade.hideContentLoading();
           if (action.type !== deletePostSuccess.type) {
             this.postsFacade.navigateToBackPage();
           } else {
-            this.postsFacade.loadPosts();
+            this.postsFacade.loadPosts(
+              postsPage?.pageIndex,
+              postsPage?.pageIndex,
+              postsPage?.sortBy,
+              postsPage?.sortDirection
+            );
           }
         })
       );

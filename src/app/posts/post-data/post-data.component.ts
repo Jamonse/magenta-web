@@ -16,4 +16,8 @@ export class PostDataComponent implements OnInit {
   ngOnInit(): void {
     this.post = this.postsFacade.getPostById();
   }
+
+  backPage(): void {
+    this.postsFacade.navigateToBackPage();
+  }
 }

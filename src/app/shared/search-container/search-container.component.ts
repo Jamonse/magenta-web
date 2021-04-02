@@ -6,16 +6,12 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Subscription } from 'rxjs';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  switchMap,
-  tap,
-} from 'rxjs/operators';
+import { Observable, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { Permission } from 'src/app/auth/model/permission.model';
 import { NONE } from 'src/app/auth/util/permission.util';
 import { SortEvent } from '../dialog/service/events/sort.event';
+import { SearchResult } from '../utils/search.result';
 import { SortInterface } from '../utils/sort.interface';
 
 @Component({
@@ -33,7 +29,7 @@ export class SearchContainerComponent implements OnDestroy {
   // Set label of search input
   @Input() searchLabel: string = 'Search...';
   // Search results return from search operation
-  @Input() searchResults: string[] = [];
+  @Input() searchResults!: Observable<SearchResult[]>;
   // Sort options label
   @Input() sortOptionsLabel: string = 'Sort by...';
   // Current values
@@ -44,6 +40,7 @@ export class SearchContainerComponent implements OnDestroy {
   @Output() editEvent: EventEmitter<any> = new EventEmitter();
   @Output() sortEvent: EventEmitter<SortEvent> = new EventEmitter();
   @Output() searchTextEvent: EventEmitter<string> = new EventEmitter();
+  @Output() searchClickEvent: EventEmitter<number> = new EventEmitter();
 
   searchTextForm: FormGroup;
   searchTextFormSubscription: Subscription;
@@ -85,6 +82,10 @@ export class SearchContainerComponent implements OnDestroy {
 
   searchTextChanged(): void {
     this.searchTextEvent.emit(this.searchText);
+  }
+
+  searchOptionClicked(postId: number): void {
+    this.searchClickEvent.emit(postId);
   }
 
   ngOnDestroy(): void {

@@ -11,8 +11,23 @@
     <mat-icon style="margin-left: 1rem; margin-right: 1rem">search</mat-icon>
     <mat-form-field fxFlex="50" fxFlex.xs="85">
       <mat-label> {{ searchLabel }} </mat-label>
-      <input matInput formControlName="searchInput" type="text" />
+      <input
+        matInput
+        [matAutocomplete]="postSearch"
+        formControlName="searchInput"
+        type="text"
+      />
     </mat-form-field>
+    <mat-autocomplete #postSearch>
+      <mat-option
+        *ngFor="let result of searchResults | async"
+        (click)="searchOptionClicked(result.getId())"
+      >
+        <span
+          [innerHTML]="result.getSearchText() | highlight: searchText"
+        ></span>
+      </mat-option>
+    </mat-autocomplete>
     <button
       *hasPermission="editPermission"
       routerLink="posts"
