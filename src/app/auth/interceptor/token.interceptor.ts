@@ -8,14 +8,7 @@ import {
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { AuthFacade } from '../state/auth.facade';
-import {
-  catchError,
-  exhaustMap,
-  map,
-  mergeMap,
-  switchMap,
-  take,
-} from 'rxjs/operators';
+import { catchError, exhaustMap, switchMap, take } from 'rxjs/operators';
 import { Actions, ofType } from '@ngrx/effects';
 import { refreshSuccess } from '../state/auth.actions';
 
