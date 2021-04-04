@@ -1,17 +1,33 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { AppComponent } from './app.component';
+import { AUTH_STATE_NAME } from './auth/state/auth.selector';
+import { SHARED_STATE_NAME } from './shared/state/shared.selector';
+import { sharedInitialState } from './shared/state/shared.state';
+import { authInitialState } from './auth/state/auth.state';
+import { NEWSFEED_STATE_NAME } from './core/newsfeed/state/newsfeed.selector';
+import { newsfeedInitialState } from './core/newsfeed/state/newsfeed.state';
+import { POSTS_STATE_NAME } from './posts/state/posts.selector';
+import { postInitialState } from './posts/state/post.state';
+
+export const fakeAppState = {
+  [SHARED_STATE_NAME]: sharedInitialState,
+  [AUTH_STATE_NAME]: authInitialState,
+  [NEWSFEED_STATE_NAME]: newsfeedInitialState,
+  [POSTS_STATE_NAME]: postInitialState,
+};
 
 describe('AppComponent', () => {
+  let store;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule
-      ],
-      declarations: [
-        AppComponent
-      ],
+      imports: [RouterTestingModule],
+      declarations: [AppComponent],
+      providers: [provideMockStore({ initialState: fakeAppState })],
     }).compileComponents();
+
+    store = TestBed.inject(MockStore);
   });
 
   it('should create the app', () => {
@@ -20,16 +36,9 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'magenta-web'`, () => {
+  it(`should have as title 'magenta'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('magenta-web');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('magenta-web app is running!');
+    expect(app.title).toEqual('magenta');
   });
 });

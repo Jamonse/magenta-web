@@ -4,10 +4,10 @@ import {
   displayErrorMessage,
   displayGeneralLoading,
 } from './shared.actions';
-import { initialState } from './shared.state';
+import { sharedInitialState } from './shared.state';
 
 const _sharedReducer = createReducer(
-  initialState,
+  sharedInitialState,
   on(displayGeneralLoading, (state, action) => {
     return { ...state, generalLoading: action.status };
   }),

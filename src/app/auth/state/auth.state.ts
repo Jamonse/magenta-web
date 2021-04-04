@@ -6,7 +6,7 @@ export interface AuthState {
   refreshToken: string | null;
 }
 
-export const initialState: AuthState = {
+export const authInitialState: AuthState = {
   user: null,
   jwt: null,
   refreshToken: null,

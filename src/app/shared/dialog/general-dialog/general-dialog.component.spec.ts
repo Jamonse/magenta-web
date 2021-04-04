@@ -5,23 +5,37 @@ import {
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import { By } from '@angular/platform-browser';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { fakeAppState } from 'src/app/app.component.spec';
 import { MaterialModule } from 'src/app/material/material.module';
+import { GeneralDialogData } from '../model/general-dialog.data';
+import { GenerealDialogDefinition } from '../model/general-dialog.definition';
+import { GeneralDialogType } from '../model/general-dialog.type';
 
 import { GeneralDialogComponent } from './general-dialog.component';
 
 describe('GeneralDialogComponent', () => {
   let component: GeneralDialogComponent;
   let fixture: ComponentFixture<GeneralDialogComponent>;
+  let store;
 
   beforeEach(async () => {
+    const dialogData: GeneralDialogData = {
+      dialogMessage: 'message',
+      dialogType: GeneralDialogType.INFO,
+      dialogDefinition: GenerealDialogDefinition.OK,
+    };
     await TestBed.configureTestingModule({
       imports: [MaterialModule, MatDialogModule],
       declarations: [GeneralDialogComponent],
       providers: [
-        { provide: MAT_DIALOG_DATA, useValue: {} },
+        { provide: MAT_DIALOG_DATA, useValue: dialogData },
         { provide: MatDialogRef, useValue: {} },
+        provideMockStore({ initialState: fakeAppState }),
       ],
     }).compileComponents();
+
+    store = TestBed.inject(MockStore);
   });
 
   beforeEach(() => {
@@ -39,7 +53,7 @@ describe('GeneralDialogComponent', () => {
     expect(icon).toBeTruthy();
   });
 
-  it('Should contain button with ok text', () => {
+  it('Should contain button with ok text - (INFO, OK) dialog', () => {
     let buttons = fixture.debugElement.queryAll(By.css('button'));
     let buttonText = buttons[0].nativeElement.innerText;
     expect(buttons.length === 1).toBeTruthy();

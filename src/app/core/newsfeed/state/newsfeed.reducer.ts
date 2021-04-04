@@ -5,10 +5,10 @@ import {
   postDeleted,
   postUpdated,
 } from './newsfeed.action';
-import { initialState, NewsfeedState } from './newsfeed.state';
+import { newsfeedInitialState, NewsfeedState } from './newsfeed.state';
 
 const _newsfeedReducer = createReducer(
-  initialState,
+  newsfeedInitialState,
   on(loadPostsBatchSuccess, (state: NewsfeedState, action: any) => {
     const newsfeed = state.posts;
     newsfeed.concat(action.postsBatch);

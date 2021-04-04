@@ -6,10 +6,10 @@ import {
   logoutAction,
   refreshSuccess,
 } from './auth.actions';
-import { AuthState, initialState } from './auth.state';
+import { AuthState, authInitialState } from './auth.state';
 
 const _authReducer = createReducer(
-  initialState,
+  authInitialState,
   on(loginSuccess, (state: AuthState, action: any) => {
     const userData: UserData = action.user;
     return {

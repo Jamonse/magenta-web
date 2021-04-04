@@ -4,11 +4,11 @@ import {
   loadPostSuccess,
   searchPostsSuccess,
 } from './post.action';
-import { initialState, PostState } from './post.state';
+import { postInitialState, PostState } from './post.state';
 import { PostsResponse } from '../model/posts.response';
 
 const _postsReducer = createReducer(
-  initialState,
+  postInitialState,
   on(
     loadPostsSuccess,
     (state: PostState, action: any): PostState => {

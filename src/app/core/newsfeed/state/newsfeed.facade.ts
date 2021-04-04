@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { NewsfeedService } from '../service/newsfeed.service';
 import { openConnection } from './newsfeed.action';
 import { getNewsfeed } from './newsfeed.selector';
 import { NewsfeedState } from './newsfeed.state';

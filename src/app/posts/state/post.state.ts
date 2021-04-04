@@ -18,7 +18,7 @@ export interface PostState {
   loadedPost: Post | null;
 }
 
-export const initialState: PostState = {
+export const postInitialState: PostState = {
   posts: [],
   searchedPosts: [],
   totalPosts: 0,

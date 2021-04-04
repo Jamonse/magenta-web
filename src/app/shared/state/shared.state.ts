@@ -4,7 +4,7 @@ export interface SharedState {
   errorMessage: string;
 }
 
-export const initialState: SharedState = {
+export const sharedInitialState: SharedState = {
   generalLoading: false,
   contentLoading: false,
   errorMessage: '',

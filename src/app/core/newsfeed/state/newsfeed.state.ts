@@ -4,6 +4,6 @@ export interface NewsfeedState {
   posts: Post[];
 }
 
-export const initialState: NewsfeedState = {
+export const newsfeedInitialState: NewsfeedState = {
   posts: [],
 };
