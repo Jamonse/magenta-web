@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { EventSourcePolyfill } from 'ng-event-source';
 import { throwError } from 'rxjs';
 import {
   catchError,
@@ -43,11 +44,12 @@ export class NewsfeedEffect {
     () =>
       this.actions$.pipe(
         ofType(openConnection),
-        withLatestFrom(this.authFacade.getUser()),
-        tap(([action, user]) => {
-          if (user) {
-            const eventSource: EventSource = this.newsfeedService.getNewsfeedSource(
-              user.id
+        withLatestFrom(this.authFacade.getEventSourceInfo()),
+        tap(([action, info]) => {
+          if (info) {
+            const eventSource: EventSourcePolyfill = this.newsfeedService.getNewsfeedSource(
+              info.jwt,
+              info.userId
             );
             eventSource.onmessage = (event) => {
               console.log(event.data);

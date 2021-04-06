@@ -11,6 +11,7 @@ import {
   refreshRequest,
 } from './auth.actions';
 import {
+  getEventSourceInfo,
   getJwt,
   getPermissions,
   getRefreshToken,
@@ -51,5 +52,12 @@ export class AuthFacade {
 
   getPermissions(): Observable<Privilege[] | null> {
     return this.store.select(getPermissions);
+  }
+
+  getEventSourceInfo(): Observable<{
+    userId: number;
+    jwt: string | null;
+  } | null> {
+    return this.store.select(getEventSourceInfo);
   }
 }

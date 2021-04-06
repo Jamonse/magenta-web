@@ -20,3 +20,7 @@ export const getUser = createSelector(getAuthState, (state) => {
 export const getPermissions = createSelector(getAuthState, (state) => {
   return state.user ? state.user.privileges : null;
 });
+
+export const getEventSourceInfo = createSelector(getAuthState, (state) => {
+  return state.user ? { userId: state.user.id, jwt: state.jwt } : null;
+});

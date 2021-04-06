@@ -22,7 +22,10 @@ export class NewsfeedService {
       .pipe(map((postsPage) => postsPage.content));
   }
 
-  getNewsfeedSource(jwt: string, userId: number): EventSourcePolyfill {
+  getNewsfeedSource(jwt: string | null, userId: number): EventSourcePolyfill {
+    if (jwt) {
+      throw 'Unable to access resource without jwt';
+    }
     return new EventSourcePolyfill(`${NEWSFEED_URL}${userId}`, {
       headers: { [AUTHORIZATION]: `${TOKEN_PREFIX}${jwt}` },
     });
