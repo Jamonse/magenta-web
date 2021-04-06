@@ -1,6 +1,8 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { EventSourcePolyfill } from 'ng-event-source';
 import { map } from 'rxjs/operators';
+import { AUTHORIZATION, TOKEN_PREFIX } from 'src/app/auth/util/auth.util';
 import { PostsResponse } from 'src/app/posts/model/posts.response';
 import { NEWSFEED_URL, POSTS_GET_URL } from 'src/app/posts/util/posts-url.util';
 import { PAGE_INDEX, SORT_BY } from 'src/app/shared/utils/pagination.util';
@@ -20,7 +22,9 @@ export class NewsfeedService {
       .pipe(map((postsPage) => postsPage.content));
   }
 
-  getNewsfeedSource(userId: number): EventSource {
-    return new EventSource(`${NEWSFEED_URL}${userId}`);
+  getNewsfeedSource(jwt: string, userId: number): EventSourcePolyfill {
+    return new EventSourcePolyfill(`${NEWSFEED_URL}${userId}`, {
+      headers: { [AUTHORIZATION]: `${TOKEN_PREFIX}${jwt}` },
+    });
   }
 }

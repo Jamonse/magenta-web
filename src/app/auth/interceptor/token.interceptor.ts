@@ -11,11 +11,11 @@ import { AuthFacade } from '../state/auth.facade';
 import { catchError, exhaustMap, switchMap, take } from 'rxjs/operators';
 import { Actions, ofType } from '@ngrx/effects';
 import { refreshSuccess } from '../state/auth.actions';
+import { AUTHORIZATION, TOKEN_PREFIX } from '../util/auth.util';
 
-export const TOKEN_PREFIX = 'Bearer';
-export const UNABLE_TO_REFRESH =
+export const UNABLE_TO_REFRESH: string =
   'An unknown error occured, please reconnect to the system';
-export const INVALID_TOKEN = 'INVALID_TOKEN';
+export const INVALID_TOKEN: string = 'INVALID_TOKEN';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -57,7 +57,7 @@ export class TokenInterceptor implements HttpInterceptor {
   private addToken(request: HttpRequest<any>, token: string): HttpRequest<any> {
     return (request = request.clone({
       setHeaders: {
-        Authorization: `${TOKEN_PREFIX} ${token}`,
+        [AUTHORIZATION]: `${TOKEN_PREFIX} ${token}`,
       },
     }));
   }

@@ -5,10 +5,10 @@ const PROJECT: string = 'project';
 const USER: string = 'user';
 const POST: string = 'post';
 
-const READ = 'READ';
-const MANAGE = 'MANAGE';
-const WRITE = 'WRITE';
-const ADMIN = 'ADMIN';
+const READ: string = 'READ';
+const MANAGE: string = 'MANAGE';
+const WRITE: string = 'WRITE';
+const ADMIN: string = 'ADMIN';
 
 export const NONE: Permission = { name: 'none', level: READ };
 
