@@ -1,5 +1,5 @@
 export enum NewsfeedEventType {
-  CREATE,
-  UPDATE,
-  DELETE,
+  CREATE = 'CREATE',
+  UPDATE = 'UPDATE',
+  DELETE = 'DELETE',
 }

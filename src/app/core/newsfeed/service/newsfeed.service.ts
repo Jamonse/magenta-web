@@ -23,7 +23,7 @@ export class NewsfeedService {
   }
 
   getNewsfeedSource(jwt: string | null, userId: number): EventSourcePolyfill {
-    if (jwt) {
+    if (!jwt) {
       throw 'Unable to access resource without jwt';
     }
     return new EventSourcePolyfill(`${NEWSFEED_URL}${userId}`, {
