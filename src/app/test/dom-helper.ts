@@ -12,11 +12,17 @@ export class DomHelper<T> {
     return this.allElements(tagName).length;
   }
 
-  singleElement(tagName: string): DebugElement {
+  singleElement(tagName: string): HTMLElement {
+    return this.singleDebugElement(tagName).nativeElement;
+  }
+
+  singleDebugElement(tagName: string): DebugElement {
     return this.fixture.debugElement.query(By.css(tagName));
   }
 
-  allElements(tagName: string): DebugElement[] {
-    return this.fixture.debugElement.queryAll(By.css(tagName));
+  allElements(tagName: string): HTMLElement[] {
+    return this.fixture.debugElement
+      .queryAll(By.css(tagName))
+      .map((debugElement) => debugElement.nativeElement);
   }
 }

@@ -10,6 +10,7 @@ import { NEWSFEED_STATE_NAME } from './core/newsfeed/state/newsfeed.selector';
 import { newsfeedInitialState } from './core/newsfeed/state/newsfeed.state';
 import { POSTS_STATE_NAME } from './posts/state/posts.selector';
 import { postInitialState } from './posts/state/post.state';
+import { refreshLogin } from './auth/state/auth.actions';
 
 export const fakeAppState = {
   [SHARED_STATE_NAME]: sharedInitialState,
@@ -19,7 +20,7 @@ export const fakeAppState = {
 };
 
 describe('AppComponent', () => {
-  let store;
+  let store: MockStore;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule],
@@ -40,5 +41,12 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app.title).toEqual('magenta');
+  });
+
+  it(`should dispatch login refresh action on init`, () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    let spy = spyOn(store, 'dispatch');
+    fixture.detectChanges(); // Calls ngOnInit
+    expect(spy).toHaveBeenCalledOnceWith(refreshLogin());
   });
 });
