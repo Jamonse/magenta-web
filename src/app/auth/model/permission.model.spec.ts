@@ -1,17 +1,17 @@
 import {
   ACCOUNT_ADMIN,
-  ACCOUNT_READ,
   ACCOUNT_WRITE,
   USER_MANAGE,
   USER_READ,
   USER_WRITE,
 } from '../util/permission.util';
+import { AuthorizationLevel } from './authorization-level.model';
 import { Permission } from './permission.model';
 import { Privilege } from './privilege.model';
 
 describe('Permission Model', () => {
   it('should create permission', () => {
-    const permission = new Permission('permission', 'READ');
+    const permission = new Permission('permission', AuthorizationLevel.READ);
 
     expect(permission).toBeTruthy();
   });
@@ -21,7 +21,7 @@ describe('Permission Model', () => {
     const privilege: Privilege = {
       id: 1,
       name: 'different name',
-      level: 'ADMIN',
+      level: AuthorizationLevel.ADMIN,
     };
 
     expect(Permission.resolvePrivilege(privilege, permission)).toBeFalse();

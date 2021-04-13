@@ -35,7 +35,7 @@ export class HasPermissionDirective implements OnDestroy {
           const hasPermission = privileges.some(
             (privilege) =>
               privilege.name === requiredPermission.name &&
-              Permission.resolvePrivilege(privilege, requiredPermission)
+              privilege.level >= requiredPermission.level
           ); // Display content if it does, otherwise hide content
           if (hasPermission) {
             this.displayContent();
