@@ -6,6 +6,7 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { fakeAppState } from 'src/app/app.component.spec';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { DomHelper } from 'src/app/test/dom-helper';
+import { AuthFacade } from '../state/auth.facade';
 
 import { LoginComponent } from './login.component';
 
@@ -14,6 +15,7 @@ describe('LoginComponent', () => {
   let fixture: ComponentFixture<LoginComponent>;
   let helper: DomHelper<LoginComponent>;
   let store: MockStore;
+  let facade: AuthFacade;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -25,7 +27,7 @@ describe('LoginComponent', () => {
         ReactiveFormsModule,
         SharedModule,
       ],
-      providers: [provideMockStore({ initialState: fakeAppState })],
+      providers: [AuthFacade, provideMockStore({ initialState: fakeAppState })],
     }).compileComponents();
 
     store = TestBed.inject(MockStore);
@@ -35,6 +37,7 @@ describe('LoginComponent', () => {
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
     helper = new DomHelper(fixture);
+    facade = TestBed.inject(AuthFacade);
   });
 
   it('should create', () => {
@@ -49,7 +52,25 @@ describe('LoginComponent', () => {
     expect(spy).toHaveBeenCalled();
   });
 
+  it('form should not be valid when empty', () => {
+    fixture.detectChanges();
+    expect(component.loginForm.valid).toBeFalsy();
+  });
+
   it('should call login method with form information on submition', () => {
-    spyOn(component, 'login');
+    fixture.detectChanges();
+    const email = 'email@email.com';
+    const password = 'password';
+    const emailField = component.loginForm.controls['email'];
+    const passwordField = component.loginForm.controls['password'];
+    let spy = spyOn(facade, 'performLogin');
+
+    emailField.patchValue(email);
+    passwordField.patchValue(password);
+
+    component.login();
+
+    expect(component.loginForm.valid).toBeTrue();
+    expect(spy).toHaveBeenCalledOnceWith(email, password);
   });
 });

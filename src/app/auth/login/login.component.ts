@@ -1,11 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
-import { SharedFacade } from 'src/app/shared/state/shared.facade';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthFacade } from '../state/auth.facade';
 
 @Component({
@@ -17,8 +11,7 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private authFacade: AuthFacade,
-    private sharedFacade: SharedFacade
+    private authFacade: AuthFacade
   ) {}
 
   ngOnInit(): void {
